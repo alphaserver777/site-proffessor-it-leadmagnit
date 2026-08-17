@@ -1172,9 +1172,68 @@ a[href="#library"] {
   cursor: pointer;
 }
 
+#faq .faq-closing-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  gap: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--blue) 18%, var(--line));
+}
+
+#faq .faq-closing-action > span {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--muted);
+  font: 700 .61rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .11em;
+}
+
+#faq .faq-closing-action > span i {
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--green) 64%, transparent);
+}
+
+#faq .faq-closing-action > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 9.25rem;
+  min-height: 3.15rem;
+  padding: .65rem .7rem .65rem 1.15rem;
+  gap: 1.25rem;
+  color: #041014;
+  border-radius: .85rem;
+  background: linear-gradient(120deg, var(--blue), var(--green));
+  box-shadow: 0 14px 34px rgba(85, 217, 255, .16), inset 0 1px 0 rgba(255, 255, 255, .25);
+  font-size: .82rem;
+  font-weight: 800;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+#faq .faq-closing-action > a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 19px 42px rgba(98, 239, 187, .23), inset 0 1px 0 rgba(255, 255, 255, .3);
+}
+
+#faq .faq-closing-action > a svg {
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: .38rem;
+  border-radius: 50%;
+  background: rgba(4, 16, 20, .09);
+  box-sizing: border-box;
+}
+
 #faq .faq-filter-button:focus-visible,
 #faq .faq-question-button:focus-visible,
-#faq .faq-empty button:focus-visible {
+#faq .faq-empty button:focus-visible,
+#faq .faq-closing-action > a:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 2px;
 }
@@ -1208,6 +1267,14 @@ a[href="#library"] {
 
   #faq .faq-navigation {
     padding: .65rem;
+  }
+
+  #faq .faq-closing-action {
+    justify-content: space-between;
+  }
+
+  #faq .faq-closing-action > a {
+    min-width: 8.5rem;
   }
 
   #faq .faq-filter-list {

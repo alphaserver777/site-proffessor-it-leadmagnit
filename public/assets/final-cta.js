@@ -31,6 +31,11 @@ const enhanceFinalCta = () => {
   const paragraphs = subtitle.textContent.split(/\n\s*\n/).map((value) => value.trim()).filter(Boolean);
   subtitle.hidden = true;
 
+  // The route choice closes the sales argument; FAQ follows it as the final
+  // objection-handling section before the footer.
+  const faqSection = document.querySelector("#faq");
+  if (faqSection) faqSection.before(section);
+
   const eyebrow = document.createElement("div");
   eyebrow.className = "final-cta-eyebrow final-journey-eyebrow final-choice-eyebrow final-split-eyebrow";
   eyebrow.innerHTML = '<span>Финальный выбор</span><small>ROUTE / 02</small>';

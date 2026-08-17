@@ -189,9 +189,20 @@ const enhanceFaq = () => {
     <p>Попробуй изменить запрос или посмотреть все категории.</p>
     <button type="button">Сбросить фильтры</button>`;
 
+  const closingAction = document.createElement("div");
+  closingAction.className = "faq-closing-action";
+  closingAction.innerHTML = `
+    <span><i aria-hidden="true"></i>FAQ / COMPLETE</span>
+    <a href="https://t.me/proffessor_it" target="_blank" rel="noopener noreferrer" data-track="cta_click:faq">
+      Оффер
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7 17 17 7"></path><path d="M7 7h10v10"></path>
+      </svg>
+    </a>`;
+
   main.append(toolbar, list, empty);
   layout.append(navigation, main);
-  host.replaceChildren(layout);
+  host.replaceChildren(layout, closingAction);
 
   const filterButtons = new Map();
   const makeFilter = (id, index, title, count) => {
