@@ -33,11 +33,11 @@ const enhanceFinalCta = () => {
     <div class="final-journey-map">
       <div class="final-journey-start">
         <span>Ты здесь</span>
-        <strong>Первый шаг</strong>
-        <small>00 / START</small>
+        <strong>Твой выбор</strong>
+        <small>00 / CHOICE</small>
       </div>
-      <section class="final-direct-path" aria-label="Личный маршрут с Вадимом до оффера">
-        <header><span>С Вадимом</span><small>до 2 месяцев</small></header>
+      <section class="final-direct-path" aria-label="Личный маршрут со мной до оффера">
+        <header><span>Со мной</span><small>до 2 месяцев</small></header>
         <div class="final-direct-track">
           <i class="final-direct-signal" aria-hidden="true"></i>
           ${directSteps.map((step, index) => `<div class="final-direct-step"><span>0${index + 1}</span><strong>${step}</strong></div>`).join("")}
@@ -78,7 +78,9 @@ const enhanceFinalCta = () => {
   action?.classList.add("final-cta-action", "final-journey-action");
   const note = document.createElement("p");
   note.className = "final-cta-note final-journey-note";
-  note.innerHTML = '<span aria-hidden="true"></span>Фиксация места и реквизиты для оплаты — в Telegram.';
+  note.innerHTML = '<span aria-hidden="true"></span>3 места · перейти к оплате';
+  const start = journey.querySelector(".final-journey-start");
+  start?.append(action);
   action?.after(note);
   return true;
 };

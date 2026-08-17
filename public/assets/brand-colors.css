@@ -2175,3 +2175,157 @@ a[href="#library"] {
     animation: none !important;
   }
 }
+
+/* Borderless final composition: the CTA itself is the route choice node. */
+.final-journey-panel {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background:
+    radial-gradient(circle at 8% 10%, rgba(85, 217, 255, .12), transparent 27rem),
+    radial-gradient(circle at 92% 78%, rgba(98, 239, 187, .07), transparent 25rem),
+    linear-gradient(145deg, #08111b, #0a1621 58%, #08131a) !important;
+  box-shadow: none !important;
+}
+
+.final-journey-title {
+  font-size: clamp(2.2rem, 3.6vw, 3.05rem) !important;
+  line-height: 1.06 !important;
+}
+
+.final-journey-subtitle {
+  max-width: 52rem !important;
+  color: rgba(197, 209, 223, .84) !important;
+  font-size: .94rem !important;
+  line-height: 1.72;
+}
+
+.final-journey {
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.final-journey-head {
+  grid-template-columns: 12rem 1fr 7rem;
+  padding-inline: 0;
+  border-bottom: 0;
+  color: rgba(143, 155, 173, .54);
+  font-size: .62rem;
+}
+
+.final-journey-map {
+  grid-template-columns: 12rem minmax(0, 1fr);
+  padding-inline: 0;
+}
+
+.final-journey-map::before {
+  left: 12.6rem;
+}
+
+.final-journey-start {
+  min-height: 10.5rem;
+  padding: .5rem 1rem .5rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.final-journey-start::after {
+  width: .6rem;
+}
+
+.final-journey-start strong {
+  font-size: 1rem;
+}
+
+.final-journey-start small {
+  font-size: .58rem;
+}
+
+.final-direct-path,
+.final-maze-path {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.final-direct-path {
+  background: linear-gradient(90deg, rgba(85, 217, 255, .055), rgba(98, 239, 187, .025), transparent);
+}
+
+.final-direct-path header,
+.final-maze-path header {
+  padding-inline: .75rem 0;
+  border-bottom: 0;
+}
+
+.final-direct-path::before,
+.final-maze-path::before {
+  width: .6rem;
+}
+
+.final-direct-path header span,
+.final-maze-path header span {
+  font-size: .68rem;
+}
+
+.final-direct-path header small,
+.final-maze-path header small {
+  font-size: .61rem;
+}
+
+.final-direct-step strong {
+  font-size: .65rem;
+}
+
+.maze-label {
+  font-size: .59rem;
+}
+
+.final-journey-start .final-journey-action {
+  width: 100%;
+  margin: .55rem 0 0 !important;
+}
+
+.final-journey-start .final-journey-action .btn {
+  width: 100%;
+  min-width: 0;
+  min-height: 3.15rem;
+  padding-inline: .8rem;
+  border-radius: .9rem;
+  font-size: .82rem;
+  box-shadow: 0 16px 38px rgba(85, 217, 255, .2), 0 0 0 1px rgba(255, 255, 255, .1) inset;
+}
+
+.final-journey-note {
+  align-items: center;
+  margin: .65rem 0 0;
+  color: rgba(197, 209, 223, .62);
+  font: 700 .58rem/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .035em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  .final-journey-start {
+    min-height: 0;
+    padding: .5rem 0 1rem;
+  }
+
+  .final-journey-start .final-journey-action {
+    max-width: 18rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .final-journey-title {
+    font-size: clamp(2rem, 9vw, 2.55rem) !important;
+  }
+
+  .final-journey-subtitle {
+    font-size: .86rem !important;
+  }
+}
