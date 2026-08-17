@@ -134,9 +134,20 @@ data.settings.plans = [
   },
 ];
 
-// The published documents still contain the previous tariffs. Keep them off the
-// landing page until a contract for the current terms is available.
-data.settings.documents = [];
+// Keep the contract choices visible while the updated documents are being
+// prepared. For now each option continues the purchase flow in Telegram.
+data.settings.documents = [
+  {
+    label: "70 000 + 50%",
+    url: "https://t.me/proffessor_it",
+    note: "",
+  },
+  {
+    label: "180 000 без %",
+    url: "https://t.me/proffessor_it",
+    note: "",
+  },
+];
 
 const faqAnswers = new Map([
   [
