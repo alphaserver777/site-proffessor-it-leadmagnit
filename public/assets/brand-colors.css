@@ -98,13 +98,6 @@ a[href="#library"] {
   display: none !important;
 }
 
-/* A single current tariff should retain the visual weight of the former pair. */
-#plans > .mt-12.grid {
-  grid-template-columns: minmax(0, 1fr) !important;
-  max-width: 42rem;
-  margin-inline: auto;
-}
-
 /* Interactive roadmap: a selectable engineering timeline with a live progress rail. */
 #roadmap.roadmap-interactive {
   overflow: clip;
