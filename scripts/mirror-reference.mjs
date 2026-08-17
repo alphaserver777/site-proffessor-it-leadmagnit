@@ -66,7 +66,7 @@ const adapt = (value) => {
 const data = adapt(await (await get("/api/site")).json());
 data.settings.brand = "Профессор IT";
 data.settings.ctaLink = "https://t.me/proffessor_it";
-data.settings.ctaText = data.settings.ctaText || "Хочу на обучение";
+data.settings.ctaText = "Хочу оффер";
 data.settings.heroTitle = "С нуля до оффера за 2 месяца в DevOps";
 data.settings.heroSubtitle = "Я Вадим — кандидат технических наук и Senior DevOps-инженер. Лично помогу тебе освоить профессию, подготовиться к реальной работе и выйти на сильный оффер — даже если у тебя нет опыта.\n\nНикаких курсов и других кураторов. Стратегия обучения, практика, резюме, собеседования и испытательный срок — под моим сопровождением.";
 data.settings.badges = (data.settings.badges || []).map((badge) => {
@@ -78,6 +78,8 @@ data.settings.badges = (data.settings.badges || []).map((badge) => {
   }
   return badge;
 });
+data.settings.ui.ctaTitle = "Через 2 месяца у тебя может быть оффер. Сегодня нужен только первый шаг.";
+data.settings.ui.ctaSubtitle = "Я беру в работу только 3 человек, потому что веду каждого лично — от первой темы до оффера и испытательного срока.\n\nЕсли ты готов уделять обучению 2 часа в день, давай обсудим твою ситуацию и выстроим путь в DevOps.";
 
 const offerImageDownloads = new Map();
 for (const offer of data.settings.jobOffers || []) {
