@@ -38,7 +38,7 @@ const enhanceFinalCta = () => {
 
   const eyebrow = document.createElement("div");
   eyebrow.className = "final-cta-eyebrow final-journey-eyebrow final-choice-eyebrow final-split-eyebrow";
-  eyebrow.innerHTML = '<span>Финальный выбор</span><small>ROUTE / 02</small>';
+  eyebrow.innerHTML = '<span>Финальный выбор</span>';
   title.before(eyebrow);
 
   const textNode = [...link.childNodes].find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
@@ -114,16 +114,10 @@ const enhanceFinalCta = () => {
   connectors.classList.add("final-split-connectors");
   connectors.setAttribute("aria-hidden", "true");
   connectors.innerHTML = `
-    <defs>
-      <marker id="final-split-arrow-top" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
-        <path d="M0 0 8 4 0 8" />
-      </marker>
-      <marker id="final-split-arrow-bottom" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
-        <path d="M0 0 8 4 0 8" />
-      </marker>
-    </defs>
     <path class="final-split-connector final-split-connector-top" />
-    <path class="final-split-connector final-split-connector-bottom" />`;
+    <path class="final-split-connector-head final-split-connector-head-top" />
+    <path class="final-split-connector final-split-connector-bottom" />
+    <path class="final-split-connector-head final-split-connector-head-bottom" />`;
   map.append(connectors);
 
   const syncConnectors = () => {
@@ -152,10 +146,13 @@ const enhanceFinalCta = () => {
       y: trackRect.top - mapRect.top + trackRect.height / 2,
     };
     const bendX = start.x + Math.min(48, Math.max(24, (topTarget.x - start.x) * .42));
-    const route = (target) => `M ${start.x} ${start.y} H ${bendX - 10} C ${bendX} ${start.y} ${bendX} ${target.y} ${bendX + 12} ${target.y} H ${target.x - 3}`;
+    const route = (target) => `M ${start.x} ${start.y} H ${bendX - 10} C ${bendX} ${start.y} ${bendX} ${target.y} ${bendX + 12} ${target.y} H ${target.x - 5}`;
+    const head = (target) => `M ${target.x - 12} ${target.y - 5} L ${target.x - 5} ${target.y} L ${target.x - 12} ${target.y + 5}`;
 
     connectors.querySelector(".final-split-connector-top")?.setAttribute("d", route(topTarget));
+    connectors.querySelector(".final-split-connector-head-top")?.setAttribute("d", head(topTarget));
     connectors.querySelector(".final-split-connector-bottom")?.setAttribute("d", route(bottomTarget));
+    connectors.querySelector(".final-split-connector-head-bottom")?.setAttribute("d", head(bottomTarget));
   };
 
   requestAnimationFrame(syncConnectors);

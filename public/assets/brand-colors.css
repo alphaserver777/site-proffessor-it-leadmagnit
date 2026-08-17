@@ -3155,14 +3155,7 @@ a[href="#library"] {
 }
 
 .final-split-panel::before {
-  inset: -5rem auto;
-  left: 50%;
-  width: 100vw;
-  transform: translateX(-50%);
-  background:
-    radial-gradient(ellipse 35% 42% at 10% 18%, rgba(85, 217, 255, .09), transparent 72%),
-    radial-gradient(ellipse 32% 38% at 90% 76%, rgba(98, 239, 187, .065), transparent 74%) !important;
-  mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+  display: none;
 }
 
 .final-split-panel::after {
@@ -3267,6 +3260,7 @@ a[href="#library"] {
 }
 
 .final-split-connector {
+  stroke: rgba(85, 217, 255, .68);
   stroke-width: 1.25;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -3274,22 +3268,14 @@ a[href="#library"] {
   filter: drop-shadow(0 0 5px rgba(85, 217, 255, .22));
 }
 
-.final-split-connector-top {
-  stroke: rgba(85, 217, 255, .62);
-  marker-end: url(#final-split-arrow-top);
-}
-
-.final-split-connector-bottom {
-  stroke: rgba(98, 239, 187, .76);
-  marker-end: url(#final-split-arrow-bottom);
-}
-
-.final-split-connectors marker:first-child path {
-  fill: rgba(85, 217, 255, .82);
-}
-
-.final-split-connectors marker:last-of-type path {
-  fill: rgba(98, 239, 187, .92);
+.final-split-connector-head {
+  fill: none;
+  stroke: rgba(85, 217, 255, .82);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 5px rgba(85, 217, 255, .25));
 }
 
 @media (min-width: 641px) {

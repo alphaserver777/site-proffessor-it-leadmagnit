@@ -67,7 +67,7 @@ const data = adapt(await (await get("/api/site")).json());
 data.settings.brand = "Профессор IT";
 data.settings.logoUrl = "/mentorship/professorit-mark.png";
 data.settings.ctaLink = "https://t.me/proffessor_it";
-data.settings.ctaText = "Хочу оффер";
+data.settings.ctaText = "Хочу на обучение";
 data.settings.heroTitle = "С нуля до оффера за 2 месяца в DevOps";
 data.settings.heroSubtitle = "Меня зовут Вадим — я кандидат технических наук, Senior DevOps-инженер и профессиональный хакер. У меня более 10 лет опыта в IT. Я лично помогу тебе освоить профессию, подготовиться к реальной работе и выйти на сильный оффер — даже если у тебя нет опыта.\n\nНикаких курсов и других кураторов. Стратегия обучения, практика, резюме, собеседования и испытательный срок — под моим сопровождением.";
 data.settings.badges = (data.settings.badges || []).map((badge) => {
@@ -123,6 +123,7 @@ data.settings.plans = [
     price: "70 000 + 50%",
     period: "",
     highlighted: true,
+    cta: "Хочу на обучение",
     ctaLink: "https://t.me/proffessor_it",
   },
   {
@@ -131,6 +132,7 @@ data.settings.plans = [
     price: "180 000",
     period: "",
     highlighted: false,
+    cta: "Хочу на обучение",
     ctaLink: "https://t.me/proffessor_it",
   },
 ];
