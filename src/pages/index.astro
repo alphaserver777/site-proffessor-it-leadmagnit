@@ -2,452 +2,152 @@
 import Base from "../layouts/Base.astro";
 import "../styles/site.css";
 
-const title = "Индивидуальное наставничество DevOps и ИБ — Профессор IT";
-const description =
-  "Персональный инженерный трек по DevOps, информационной безопасности и этичному пентесту: диагностика, лабораторная практика, ревью и проект.";
+const SOURCE = "https://site.criminalit.ru";
+const response = await fetch(`${SOURCE}/api/site`);
+if (!response.ok) throw new Error(`Criminal IT source returned ${response.status}`);
 
-const tracks = [
-  {
-    id: "devops",
-    number: "01",
-    name: "DevOps",
-    role: "Архитектор",
-    color: "#52e6ae",
-    summary: "От Linux и сетей — к воспроизводимой инфраструктуре.",
-    problem:
-      "Для системных администраторов, студентов и Junior-инженеров, которым не хватает системы и практики.",
-    skills: ["Linux и сети", "Docker и CI/CD", "Ansible и Terraform", "Kubernetes и наблюдаемость"],
-    project: "Рабочий сервис, pipeline, инфраструктурная схема и техническая защита решений.",
-  },
-  {
-    id: "security",
-    number: "02",
-    name: "Информационная безопасность",
-    role: "Защитник",
-    color: "#54b9ff",
-    summary: "От устройства системы — к доказательной защите.",
-    problem:
-      "Для тех, кто хочет связать Linux, сети, hardening и мониторинг в единую инженерную картину.",
-    skills: ["Модель угроз", "Hardening Linux", "Мониторинг и SIEM", "Безопасность инфраструктуры"],
-    project: "Учебный аудит, модель угроз, план усиления и профессиональный отчёт.",
-  },
-  {
-    id: "pentest",
-    number: "03",
-    name: "Этичный пентест",
-    role: "Исследователь",
-    color: "#ff4d5f",
-    summary: "От хаотичных инструментов — к методологии исследования.",
-    problem:
-      "Для начинающих специалистов по ИБ, готовых работать только на легальных стендах и в разрешённом контуре.",
-    skills: ["Linux и сети", "Web и API", "Методология проверки", "Фиксация доказательств"],
-    project: "Воспроизводимая цепочка проверки и отчёт с понятными рекомендациями по исправлению.",
-  },
+type Item = Record<string, any>;
+type SourceData = { settings: Item; sections: Item[]; lessons: Item[] };
+const raw = (await response.json()) as SourceData;
+const nameForms: Array<[RegExp, string]> = [
+  [/Кириллом/g, "Вадимом"], [/Кириллу/g, "Вадиму"], [/Кирилла/g, "Вадима"],
+  [/Кирилле/g, "Вадиме"], [/Кирилл/g, "Вадим"], [/кириллом/g, "вадимом"],
+  [/кириллу/g, "вадиму"], [/кирилла/g, "вадима"], [/кирилле/g, "вадиме"], [/кирилл/g, "вадим"],
 ];
-
-const route = [
-  ["01", "Диагностика", "Разбираем вашу цель, опыт, ограничения и реальные пробелы."],
-  ["02", "Карта навыков", "Фиксируем маршрут на 1–3 месяца и критерии результата."],
-  ["03", "Инженерные спринты", "Каждый цикл: теория по необходимости, задача, самостоятельная работа и ревью."],
-  ["04", "Проект", "Собираем артефакт, который подтверждает навык, а не просмотр уроков."],
-  ["05", "Защита", "Вы объясняете архитектуру, компромиссы, ошибки и принятые решения."],
-  ["06", "Следующий уровень", "Фиксируем рост и строим следующий маршрут без зависимости от наставника."],
-];
-
-const faq = [
-  ["Это курс с записанными уроками?", "Нет. Материалы используются как опора, но ядро программы — ваши задачи, лабораторная практика, ревью и защита результата."],
-  ["Можно начать с нуля?", "Да, если вы готовы регулярно работать самостоятельно. Сложность и стартовая точка подбираются после диагностики или тест-драйва."],
-  ["Сколько времени потребуется в неделю?", "Обычно разумный минимум — 4–6 часов вместе с самостоятельной практикой. Точный ритм зависит от цели и текущей нагрузки."],
-  ["Вы гарантируете трудоустройство?", "Нет. Никто не может честно гарантировать решение работодателя. Я отвечаю за структуру маршрута, содержательные задачи, обратную связь и прозрачные критерии прогресса."],
-  ["Как проходит работа по безопасности?", "Только на собственных виртуальных машинах, учебных стендах и в явно разрешённом контуре. Методология и профессиональная этика — часть программы."],
-  ["Что будет результатом?", "Набор подтверждаемых навыков и артефакт: проект, схема, репозиторий, аудит или отчёт — в зависимости от выбранного направления и цели."],
-];
-
-const telegramHref =
-  "https://t.me/proffessor_it?text=" +
-  encodeURIComponent("Здравствуйте! Хочу обсудить индивидуальное наставничество. Моя текущая роль/опыт: ");
-
+const adaptText = (value: unknown) => {
+  let text = String(value ?? "");
+  nameForms.forEach(([pattern, replacement]) => (text = text.replace(pattern, replacement)));
+  return text.replaceAll("Criminal IT", "Профессор IT");
+};
+const asset = (value: string) => value?.startsWith("/") ? `${SOURCE}${value}` : value;
+const s = raw.settings;
+const ui = s.ui || {};
+const ctaLink = "https://t.me/proffessor_it";
+const title = "Профессор IT — с нуля до оффера в DevOps";
+const description = adaptText(s.heroSubtitle).replace(/\s+/g, " ").trim();
+const lessonsBySection: Array<Item & { lessons: Item[] }> = raw.sections.sort((a, b) => a.order - b.order).map((section) => ({
+  ...section,
+  lessons: raw.lessons.filter((lesson) => lesson.sectionId === section.id).sort((a, b) => a.order - b.order),
+}));
+const iconFor = (name: string) => name === "refund" ? "↩" : name === "shield" ? "◇" : "✦";
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "Person",
-      name: "Вадим Моисеенко",
-      jobTitle: "Инженерный наставник, кандидат технических наук",
-      url: "https://professorit.ru/mentorship/",
-    },
-    {
-      "@type": "Service",
-      name: "Индивидуальное инженерное наставничество",
-      description,
-      provider: { "@type": "Person", name: "Вадим Моисеенко" },
-      areaServed: "RU",
-    },
-    {
-      "@type": "FAQPage",
-      mainEntity: faq.map(([question, answer]) => ({
-        "@type": "Question",
-        name: question,
-        acceptedAnswer: { "@type": "Answer", text: answer },
-      })),
-    },
+    { "@type": "Person", name: "Вадим Моисеенко", jobTitle: "DevOps / SRE наставник" },
+    { "@type": "Service", name: "DevOps-наставничество под ключ", provider: { "@type": "Person", name: "Вадим Моисеенко" } },
+    { "@type": "FAQPage", mainEntity: s.faq.map((item: Item) => ({ "@type": "Question", name: adaptText(item.q), acceptedAnswer: { "@type": "Answer", text: adaptText(item.a) } })) },
   ],
 };
 ---
 
 <Base {title} {description}>
   <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-
-  <div class="mentor-page" id="top">
-    <div class="reading-progress" aria-hidden="true"><span data-page-progress></span></div>
-
-    <header class="mentor-header">
-      <a class="mentor-brand" href="/" aria-label="Профессор IT — главная">
-        <span class="mentor-brand-mark">P</span>
-        <span>ПРОФЕССОР IT<small>ИНЖЕНЕРНОЕ НАСТАВНИЧЕСТВО</small></span>
-      </a>
-      <nav aria-label="Навигация по странице">
-        <a href="#tracks">Направления</a>
-        <a href="#method">Метод</a>
-        <a href="#format">Формат</a>
-        <a href="#mentor">Наставник</a>
+  <div class="sales-page" id="top">
+    <div class="page-progress"><span data-progress></span></div>
+    <header class="sales-header">
+      <a class="brand" href="#top"><span class="brand-mark">P</span><span>ПРОФЕССОР IT<small>DEVOPS / SRE MENTORSHIP</small></span></a>
+      <nav aria-label="Основная навигация">
+        <a href="#about">{adaptText(ui.navAbout)}</a><a href="#guarantees">{adaptText(ui.navGuarantees)}</a>
+        <a href="#library">{adaptText(ui.navLibrary)}</a><a href="#plans">{adaptText(ui.navPlans)}</a>
+        <a href="#reviews">{adaptText(ui.navReviews)}</a><a href="#results">{adaptText(ui.navJobOffers)}</a><a href="#faq">{adaptText(ui.navFaq)}</a>
       </nav>
-      <a class="mentor-button mentor-button-small" href={telegramHref} target="_blank" rel="noreferrer" data-mentor-cta>
-        Обсудить маршрут
-      </a>
+      <a class="button button-compact" href={ctaLink} target="_blank" rel="noreferrer" data-cta>{adaptText(s.ctaText)}</a>
     </header>
 
     <main>
-      <section class="mentor-hero mentor-shell">
-        <div class="hero-orbit" aria-hidden="true"></div>
-        <div class="mentor-hero-copy">
-          <div class="mentor-status"><i></i> ИНДИВИДУАЛЬНАЯ РАБОТА · 1:1</div>
-          <h1>Не ещё один курс.<br /><em>Ваш путь к инженерной самостоятельности</em></h1>
-          <p>
-            Персональный трек по DevOps, информационной безопасности или этичному пентесту:
-            диагностика, практика, ревью, проект и защита результата.
-          </p>
-          <div class="mentor-hero-actions">
-            <a class="mentor-button mentor-button-primary" href={telegramHref} target="_blank" rel="noreferrer" data-mentor-cta>
-              Обсудить мой маршрут <span>↗</span>
-            </a>
-            <a class="mentor-text-link" href="#method">Как устроена работа <span>↓</span></a>
-          </div>
-          <div class="mentor-hero-facts" aria-label="Ключевые особенности">
-            <span><b>1–3</b><small>месяца</small></span>
-            <span><b>1:1</b><small>с наставником</small></span>
-            <span><b>10+</b><small>лет практики</small></span>
-            <span><b>1</b><small>защищаемый проект</small></span>
-          </div>
+      <section class="hero shell">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <span class="hero-kicker"><i></i> ЛИЧНОЕ МЕНТОРСТВО · DEVOPS / SRE</span>
+          <h1>{adaptText(s.heroTitle)}</h1><p>{adaptText(s.heroSubtitle)}</p>
+          <div class="hero-actions"><a class="button button-primary button-large" href={ctaLink} target="_blank" rel="noreferrer" data-cta>{adaptText(s.ctaText)} <span>↗</span></a><a class="text-link" href="#library">{adaptText(ui.heroSecondary)} <span>↓</span></a></div>
+          <div class="badges">{s.badges.map((badge: Item) => <span class={`badge badge-${badge.color}`}><i>{badge.icon === "fire" ? "◆" : badge.icon === "ruble" ? "₽" : "✦"}</i>{adaptText(badge.text)}</span>)}</div>
         </div>
-
-        <div class="route-console" aria-label="Схема персонального инженерного маршрута">
-          <div class="console-head"><span><i></i> ROUTE BUILDER</span><b>LIVE / 01</b></div>
-          <div class="console-grid" aria-hidden="true"></div>
-          <div class="console-start">
-            <small>ТОЧКА А</small>
-            <strong>Ваш опыт</strong>
-            <span>Навыки · цель · ограничения</span>
-          </div>
-          <svg viewBox="0 0 620 580" aria-hidden="true">
-            <path class="path-shadow" d="M82 437 C120 330 210 372 240 274 S352 123 415 209 S482 303 548 108"></path>
-            <path class="path-live" d="M82 437 C120 330 210 372 240 274 S352 123 415 209 S482 303 548 108"></path>
-          </svg>
-          <div class="route-node node-a"><i></i><span>Диагностика</span></div>
-          <div class="route-node node-b"><i></i><span>Практика</span></div>
-          <div class="route-node node-c"><i></i><span>Ревью</span></div>
-          <div class="route-node node-d"><i></i><span>Проект</span></div>
-          <div class="console-result">
-            <small>ТОЧКА Б</small>
-            <strong>Инженерный результат</strong>
-            <span>Могу сделать · объяснить · защитить</span>
-          </div>
-          <div class="console-foot"><span>NO GENERIC ROADMAPS</span><span>ADAPTIVE ROUTE: ON</span></div>
+        <div class="hero-console" aria-label="Система выхода на оффер">
+          <div class="console-grid"></div><div class="console-head"><span><i></i> OFFER SYSTEM / ACTIVE</span><b>PROFESSOR IT</b></div>
+          <div class="console-core"><small>ЦЕЛЕВОЙ РЕЗУЛЬТАТ</small><strong>ОФФЕР</strong><span>DEVOPS / SRE</span></div>
+          <div class="console-ring ring-a"></div><div class="console-ring ring-b"></div>
+          <div class="console-node node-1"><b>01</b><span>НАВЫКИ</span></div><div class="console-node node-2"><b>02</b><span>ЛЕГЕНДА</span></div><div class="console-node node-3"><b>03</b><span>СОБЕСЫ</span></div><div class="console-node node-4"><b>04</b><span>ОФФЕР</span></div>
+          <div class="console-data"><span>MARKET READY</span><span>MENTOR ONLINE</span><span>SUPPORT: ON</span></div>
         </div>
+        <div class="stats">{s.stats.map((stat: Item) => <span><b>{adaptText(stat.value)}</b><small>{adaptText(stat.label)}</small></span>)}</div>
       </section>
 
-      <section class="signal-strip" aria-label="Принципы наставничества">
-        <div>
-          <span>ДИАГНОСТИКА ДО ПРОГРАММЫ</span><i>◆</i>
-          <span>ТЕОРИЯ ПОД ЗАДАЧУ</span><i>◆</i>
-          <span>РЕВЬЮ ВАШЕГО РЕШЕНИЯ</span><i>◆</i>
-          <span>АРТЕФАКТ ВМЕСТО СЕРТИФИКАТА</span>
-        </div>
+      <section class="section section-dark reveal" id="about"><div class="shell">
+        <div class="section-code">01 / {adaptText(ui.aboutEyebrow || "ОБ ОБУЧЕНИИ")}</div>
+        <div class="section-heading split"><h2>{adaptText(ui.aboutTitle)}</h2><p class="lead">{adaptText(s.about)}</p></div>
+        <div class="skills-head"><span>{adaptText(ui.aboutSkillsLabel)}</span><b>{s.skills.length} ЭЛЕМЕНТОВ СИСТЕМЫ</b></div>
+        <div class="skills-cloud">{s.skills.map((skill: string, index: number) => <span><i>{String(index + 1).padStart(2, "0")}</i>{adaptText(skill)}</span>)}</div>
+      </div></section>
+
+      <section class="section shell reveal" id="guarantees">
+        <div class="section-code">02 / ГАРАНТИИ</div><div class="section-heading"><h2>{adaptText(ui.guaranteesTitle)}</h2><p>{adaptText(ui.guaranteesSubtitle)}</p></div>
+        <div class="guarantees-grid">{s.guarantees.map((item: Item, index: number) => <article><div class="guarantee-icon">{iconFor(item.icon)}</div><small>ГАРАНТИЯ / {String(index + 1).padStart(2, "0")}</small><h3>{adaptText(item.title)}</h3><p>{adaptText(item.text)}</p></article>)}</div>
       </section>
 
-      <section class="mentor-section mentor-shell problem-section reveal">
-        <div class="problem-index">01</div>
-        <div class="mentor-section-head">
-          <span class="mentor-kicker">ПОЧЕМУ ОБУЧЕНИЕ ЗАСТРЕВАЕТ</span>
-          <h2>Информации достаточно.<br /><em>Не хватает обратной связи.</em></h2>
-        </div>
-        <div class="problem-layout">
-          <p class="problem-lead">
-            Можно месяцами смотреть видео и сохранять роадмапы. Но инженерный навык появляется только тогда,
-            когда вы самостоятельно принимаете решения, ошибаетесь, исправляете и можете объяснить результат.
-          </p>
-          <div class="problem-grid">
-            <article><span>01</span><h3>Слишком много тем</h3><p>Непонятно, что учить сейчас, а что не влияет на ближайшую цель.</p></article>
-            <article><span>02</span><h3>Ошибки остаются невидимыми</h3><p>Рабочий результат ещё не означает надёжное или понятное решение.</p></article>
-            <article><span>03</span><h3>Нет собственного проекта</h3><p>Знания трудно подтвердить без артефакта и уверенной технической защиты.</p></article>
-          </div>
-        </div>
+      <section class="section roadmap-section reveal" id="roadmap"><div class="shell">
+        <div class="section-code">03 / {adaptText(ui.navRoadmap)}</div><div class="section-heading split"><h2>{adaptText(ui.roadmapTitle)}</h2><p>{adaptText(ui.roadmapSubtitle)}</p></div>
+        <ol class="roadmap">{s.roadmap.map((item: Item, index: number) => <li><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{adaptText(item.title)}</h3><p>{adaptText(item.text)}</p></div><i>↗</i></li>)}</ol>
+      </div></section>
+
+      <section class="section shell reveal" id="library">
+        <div class="section-code">04 / {adaptText(ui.libraryEyebrow)}</div><div class="section-heading split"><h2>{adaptText(ui.libraryTitle)}</h2><p>{adaptText(ui.librarySubtitle).replace("{count}", String(raw.lessons.length))}</p></div>
+        <div class="library-sections">{lessonsBySection.map((section) => <section class="library-group">
+          <div class="library-group-head"><div><span>VIDEO ARCHIVE</span><h3>{adaptText(section.title)}</h3><p>{adaptText(section.description)}</p></div><b>{String(section.lessons.length).padStart(2, "0")}</b></div>
+          <div class="video-grid">{section.lessons.map((lesson: Item, index: number) => <article class="video-card"><div class="video-frame"><video controls preload="none" src={asset(lesson.videoUrl)}></video><span class="video-number">{String(index + 1).padStart(2, "0")}</span>{lesson.duration && <small>{adaptText(lesson.duration)}</small>}</div><h4>{adaptText(lesson.title)}</h4>{lesson.description && <p>{adaptText(lesson.description)}</p>}</article>)}</div>
+        </section>)}</div>
       </section>
 
-      <section class="mentor-section track-section reveal" id="tracks">
-        <div class="mentor-shell">
-          <div class="section-number">02 / НАПРАВЛЕНИЯ</div>
-          <div class="mentor-section-head split-head">
-            <h2>Выберите инженерную роль.<br /><em>Фундамент останется системным.</em></h2>
-            <p>Linux и сети связывают направления. Специализация определяет тип задач, проект и профессиональный язык.</p>
-          </div>
+      <section class="section payment-section reveal"><div class="shell payment-layout">
+        <div><div class="section-code">05 / ОПЛАТА</div><div class="section-heading"><h2>Удобный способ оплаты</h2><p>Выберите подходящий формат после обсуждения условий.</p></div></div>
+        <div class="payment-methods">{s.paymentMethods.map((item: Item) => <article>{item.image && <img src={asset(item.image)} alt="" loading="lazy" />}<strong>{adaptText(item.label)}</strong></article>)}</div>
+      </div></section>
 
-          <div class="track-tabs" role="tablist" aria-label="Направления наставничества">
-            {tracks.map((track, index) => (
-              <button
-                class:list={["track-tab", { active: index === 0 }]}
-                style={`--track:${track.color}`}
-                type="button"
-                role="tab"
-                aria-selected={index === 0 ? "true" : "false"}
-                data-track-tab={track.id}
-              >
-                <small>{track.number}</small><strong>{track.name}</strong><span>{track.role}</span>
-              </button>
-            ))}
-          </div>
-
-          <div class="track-panels">
-            {tracks.map((track, index) => (
-              <article
-                class:list={["track-panel", { active: index === 0 }]}
-                style={`--track:${track.color}`}
-                data-track-panel={track.id}
-                hidden={index !== 0}
-              >
-                <div class="track-copy">
-                  <div class="track-role"><span>{track.number}</span> ПРОФЕССИОНАЛЬНЫЙ ТРЕК / {track.role}</div>
-                  <h3>{track.summary}</h3>
-                  <p>{track.problem}</p>
-                  <ul>{track.skills.map((skill) => <li>{skill}</li>)}</ul>
-                </div>
-                <div class="track-artifact">
-                  <span>ИТОГОВЫЙ АРТЕФАКТ</span>
-                  <div class="artifact-icon" aria-hidden="true">⌬</div>
-                  <strong>{track.project}</strong>
-                  <small>Результат зависит от стартового уровня и согласованной цели.</small>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
+      <section class="section shell reveal" id="plans">
+        <div class="section-code">06 / {adaptText(ui.plansEyebrow)}</div><div class="section-heading split"><h2>{adaptText(ui.plansTitle)}</h2><p>{adaptText(ui.plansSubtitle)}</p></div>
+        <div class="plans-grid">{s.plans.map((plan: Item, index: number) => <article class:list={["plan-card", { featured: plan.highlighted }]}>
+          {plan.highlighted && <span class="popular">{adaptText(ui.plansPopular)}</span>}<div class="plan-top"><small>ТАРИФ / {String(index + 1).padStart(2, "0")}</small><h3>{adaptText(plan.name)}</h3><strong>{adaptText(plan.price)}</strong><p>{adaptText(plan.period)}</p></div>
+          <ul>{plan.features.map((feature: string) => <li>{adaptText(feature)}</li>)}</ul><a class:list={["button", { "button-primary": plan.highlighted }]} href={ctaLink} target="_blank" rel="noreferrer" data-cta>{adaptText(plan.cta)} <span>↗</span></a>
+        </article>)}</div>
       </section>
 
-      <section class="mentor-section mentor-shell method-section reveal" id="method">
-        <div class="section-number">03 / МЕТОД</div>
-        <div class="mentor-section-head split-head">
-          <h2>Маршрут меняется.<br /><em>Инженерный цикл — нет.</em></h2>
-          <p>На каждом этапе должен появляться наблюдаемый результат: решение, схема, конфигурация, отчёт или объяснение.</p>
-        </div>
-        <div class="learning-loop" aria-label="Цикл обучения">
-          <div class="loop-core"><small>КАЖДЫЙ СПРИНТ</small><strong>Сделать самому</strong><span>и защитить решение</span></div>
-          <div class="loop-item loop-one"><b>01</b><span>Контекст</span></div>
-          <div class="loop-item loop-two"><b>02</b><span>Задача</span></div>
-          <div class="loop-item loop-three"><b>03</b><span>Практика</span></div>
-          <div class="loop-item loop-four"><b>04</b><span>Ревью</span></div>
-          <div class="loop-item loop-five"><b>05</b><span>Рефлексия</span></div>
-        </div>
-        <div class="method-principles">
-          <article><span>INPUT</span><strong>Теория появляется тогда, когда нужна для решения.</strong></article>
-          <article><span>FEEDBACK</span><strong>Разбираем не только ошибку, но и способ мышления.</strong></article>
-          <article><span>OUTPUT</span><strong>Каждый блок заканчивается проверяемым артефактом.</strong></article>
-        </div>
+      <section class="section reviews-section reveal" id="reviews"><div class="shell">
+        <div class="section-code">07 / {adaptText(ui.reviewsEyebrow)}</div><div class="section-heading split"><h2>{adaptText(ui.reviewsTitle)}</h2><p>{adaptText(ui.reviewsFootnote)}</p></div>
+        <div class="reviews-grid">{s.reviews.map((review: Item, index: number) => <article class="review-card">
+          <div class="review-head"><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{adaptText(review.name)}</h3><small>{adaptText(review.role)}</small></div></div>{review.offerSummary && <strong class="offer-summary">{adaptText(review.offerSummary)}</strong>}
+          <details><summary>{adaptText(ui.reviewsReadMore)} <i>+</i></summary><p>{adaptText(review.text)}</p></details><div class="review-foot">{review.finalOffer && <b>{adaptText(review.finalOffer)}</b>}{review.link?.startsWith("http") && <a href={review.link.trim()} target="_blank" rel="noreferrer">{adaptText(ui.reviewsWriteStudent)} ↗</a>}</div>
+        </article>)}</div>
+      </div></section>
+
+      <section class="section shell reveal" id="results">
+        <div class="section-code">08 / {adaptText(ui.jobOffersEyebrow)}</div><div class="section-heading split"><h2>{adaptText(ui.jobOffersTitle)}</h2><p>{adaptText(ui.jobOffersSubtitle)}</p></div>
+        <div class="offers-grid">{s.jobOffers.map((offer: Item, index: number) => <article class="result-card"><a href={asset(offer.image)} target="_blank" rel="noreferrer"><img src={asset(offer.image)} alt={`Оффер ${adaptText(offer.company || offer.amount)}`} loading="lazy" /></a><div><small>RESULT / {String(index + 1).padStart(2, "0")}</small><strong>{adaptText(offer.amount)}</strong><h3>{adaptText(offer.company)}</h3><span>{adaptText(offer.role)}</span><p>{adaptText(offer.note)}</p></div></article>)}</div>
       </section>
 
-      <section class="mentor-section route-section reveal">
-        <div class="mentor-shell">
-          <div class="section-number">04 / МАРШРУТ</div>
-          <div class="mentor-section-head"><h2>От текущей точки<br /><em>до защищаемого результата.</em></h2></div>
-          <ol class="route-list">
-            {route.map(([number, name, text]) => (
-              <li><span>{number}</span><strong>{name}</strong><p>{text}</p><i>↗</i></li>
-            ))}
-          </ol>
-        </div>
-      </section>
+      <section class="section documents-section reveal" id="documents"><div class="shell documents-layout">
+        <div class="section-heading"><div class="section-code">09 / {adaptText(ui.navDocuments)}</div><h2>{adaptText(ui.documentsTitle)}</h2><p>{adaptText(ui.documentsSubtitle)}</p></div>
+        <div class="documents-list">{s.documents.map((doc: Item, index: number) => <a href={doc.url} target="_blank" rel="noreferrer"><span>DOC / {String(index + 1).padStart(2, "0")}</span><strong>{adaptText(doc.label)}</strong><i>↗</i></a>)}</div>
+      </div></section>
 
-      <section class="mentor-section mentor-shell format-section reveal" id="format">
-        <div class="section-number">05 / ФОРМАТ</div>
-        <div class="mentor-section-head split-head">
-          <h2>Не покупайте большой путь<br /><em>до проверки совместимости.</em></h2>
-          <p>Основной трек начинается после диагностики или тест-драйва. Так обе стороны понимают задачу и формат работы.</p>
-        </div>
-        <div class="format-grid">
-          <article class="format-card compact-card">
-            <div class="format-head"><span>СТАРТОВЫЙ СПРИНТ</span><small>4 ВСТРЕЧИ</small></div>
-            <h3>Собрать фундамент и рабочий ритм</h3>
-            <p>Для локальной цели, проверки метода или первого системного блока.</p>
-            <ul><li>Диагностика и карта навыков</li><li>4 индивидуальные встречи</li><li>Практика и проверка работ</li><li>Следующий маршрут</li></ul>
-            <div class="format-price"><small>СТАРТОВАЯ СТОИМОСТЬ</small><strong>12 000 ₽</strong></div>
-          </article>
-          <article class="format-card featured-card">
-            <div class="popular-mark">ОСНОВНОЙ ФОРМАТ</div>
-            <div class="format-head"><span>ПРОЕКТНЫЙ ТРЕК</span><small>8 ВСТРЕЧ · 1–3 МЕСЯЦА</small></div>
-            <h3>Освоить навык через собственный проект</h3>
-            <p>Для системного перехода в DevOps или ИБ и подготовки доказательной базы навыков.</p>
-            <ul><li>Персональный план и контроль прогресса</li><li>8 встреч по 75 минут</li><li>Лабораторные и ревью между этапами</li><li>Проект, документация и защита</li></ul>
-            <div class="format-price"><small>СТАРТОВАЯ СТОИМОСТЬ</small><strong>32 000 ₽</strong></div>
-          </article>
-          <article class="format-card compact-card">
-            <div class="format-head"><span>ЭКСПЕРТНАЯ СЕССИЯ</span><small>75 МИНУТ</small></div>
-            <h3>Разобрать конкретную рабочую задачу</h3>
-            <p>Для Junior/Middle-инженеров, которым нужен сфокусированный технический разбор.</p>
-            <ul><li>Предварительный контекст</li><li>75 минут один на один</li><li>Разбор вариантов и рисков</li><li>Письменное резюме</li></ul>
-            <div class="format-price"><small>СТАРТОВАЯ СТОИМОСТЬ</small><strong>5 000 ₽</strong></div>
-          </article>
-        </div>
-        <p class="format-note">Итоговый формат и объём фиксируем после диагностики. Стоимость не меняется внутри согласованного блока.</p>
-      </section>
+      <section class="section shell reveal" id="faq"><div class="section-code">10 / {adaptText(ui.faqEyebrow)}</div><div class="faq-layout">
+        <div class="section-heading"><h2>{adaptText(ui.faqTitle)}</h2><p>{s.faq.length} ответ на вопросы перед стартом.</p></div>
+        <div class="faq-list">{s.faq.map((item: Item, index: number) => <details><summary><span>{String(index + 1).padStart(2, "0")}</span>{adaptText(item.q)}<i>+</i></summary><p>{adaptText(item.a)}</p></details>)}</div>
+      </div></section>
 
-      <section class="mentor-section mentor-shell evidence-section reveal">
-        <div class="section-number">06 / КРИТЕРИИ РЕЗУЛЬТАТА</div>
-        <div class="mentor-section-head split-head">
-          <h2>Прогресс должен быть виден.<br /><em>Не только ощущаться.</em></h2>
-          <p>Мы заранее договариваемся, по каким действиям и артефактам поймём, что навык действительно появился.</p>
-        </div>
-        <div class="evidence-console">
-          <div class="evidence-row evidence-head"><span>КРИТЕРИЙ</span><span>ПРОВЕРКА</span><span>СТАТУС</span></div>
-          <div class="evidence-row"><strong>Воспроизводимость</strong><p>Решение можно повторить по коду и документации</p><b>CHECK</b></div>
-          <div class="evidence-row"><strong>Обоснование</strong><p>Вы можете объяснить выбор и альтернативы</p><b>CHECK</b></div>
-          <div class="evidence-row"><strong>Диагностика</strong><p>Вы находите причину, а не перебираете команды</p><b>CHECK</b></div>
-          <div class="evidence-row"><strong>Самостоятельность</strong><p>Следующий шаг не требует готовой инструкции</p><b>GOAL</b></div>
-        </div>
-      </section>
-
-      <section class="mentor-section mentor-block reveal" id="mentor">
-        <div class="mentor-shell mentor-profile">
-          <div class="mentor-photo-wrap">
-            <img src="https://professorit.ru/photo_2025-11-18_12-50-03.jpg" alt="Вадим Моисеенко — инженерный наставник" width="640" height="640" loading="lazy" />
-            <div class="photo-scan" aria-hidden="true"></div>
-            <span class="photo-badge"><i></i> ПРИНИМАЮ ЗАЯВКИ</span>
-          </div>
-          <div class="mentor-bio">
-            <span class="mentor-kicker">ВАШ НАСТАВНИК</span>
-            <h2>Вадим<br /><em>Моисеенко</em></h2>
-            <p class="mentor-role">Кандидат технических наук · 10+ лет практики в IT</p>
-            <p>
-              Помогаю не запоминать набор команд, а понимать устройство систем и принимать обоснованные инженерные решения.
-              Соединяю академическую строгость, практический контекст и персональную обратную связь.
-            </p>
-            <div class="mentor-expertise"><span>Linux</span><span>Networks</span><span>DevOps</span><span>Security</span><span>Automation</span></div>
-            <blockquote>«Моя цель — чтобы в конце маршрута вы могли решать следующий класс задач уже без меня».</blockquote>
-          </div>
-        </div>
-      </section>
-
-      <section class="mentor-section mentor-shell agreement-section reveal">
-        <div class="section-number">07 / ДОГОВОРЁННОСТЬ</div>
-        <div class="mentor-section-head"><h2>За что отвечаю я.<br /><em>За что отвечаете вы.</em></h2></div>
-        <div class="agreement-grid">
-          <article><span>НАСТАВНИК</span><ul><li>Собираю маршрут под вашу цель</li><li>Даю задачи подходящей сложности</li><li>Разбираю решения и объясняю причины ошибок</li><li>Фиксирую критерии прогресса</li></ul></article>
-          <article><span>УЧЕНИК</span><ul><li>Выделяет время на самостоятельную практику</li><li>Показывает реальный ход решения</li><li>Задаёт вопросы до накопления пробелов</li><li>Соблюдает этику и разрешённые границы</li></ul></article>
-        </div>
-      </section>
-
-      <section class="mentor-section mentor-shell faq-section reveal">
-        <div class="section-number">08 / FAQ</div>
-        <div class="faq-layout">
-          <div class="mentor-section-head"><h2>Вопросы<br /><em>до старта.</em></h2><p>Если вашего вопроса здесь нет — напишите его вместе с кратким описанием текущей точки.</p></div>
-          <div class="mentor-faq">
-            {faq.map(([question, answer], index) => (
-              <details open={index === 0}><summary><span>{String(index + 1).padStart(2, "0")}</span>{question}<i>+</i></summary><p>{answer}</p></details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section class="final-route reveal">
-        <div class="final-grid" aria-hidden="true"></div>
-        <div class="mentor-shell final-route-content">
-          <span class="mentor-kicker">СЛЕДУЮЩИЙ ШАГ</span>
-          <h2>Опишите точку А.<br /><em>Точку Б спроектируем вместе.</em></h2>
-          <p>Напишите текущую роль, цель на 2–3 месяца и задачу, которая сейчас не получается.</p>
-          <a class="mentor-button mentor-button-primary final-button" href={telegramHref} target="_blank" rel="noreferrer" data-mentor-cta>
-            Обсудить индивидуальный маршрут <span>↗</span>
-          </a>
-          <small>Без обещаний «оффера за N недель». Сначала задача, совместимость и честный план.</small>
-        </div>
-      </section>
+      <section class="final-cta reveal"><div class="final-grid"></div><div class="shell"><span class="hero-kicker">СЛЕДУЮЩИЙ ШАГ</span><h2>{adaptText(ui.ctaTitle)}</h2><p>{adaptText(ui.ctaSubtitle)}</p><a class="button button-primary button-large" href={ctaLink} target="_blank" rel="noreferrer" data-cta>{adaptText(s.ctaText)} <span>↗</span></a></div></section>
     </main>
-
-    <footer class="mentor-footer mentor-shell">
-      <a class="mentor-brand" href="#top"><span class="mentor-brand-mark">P</span><span>ПРОФЕССОР IT<small>ИНЖЕНЕРНОЕ НАСТАВНИЧЕСТВО</small></span></a>
-      <p>© 2026 · DevOps и информационная безопасность через системную практику</p>
-      <div><a href="/">Тест-драйв</a><a href="/guide/kak-voiti-v-it/">Карта входа в IT</a></div>
-    </footer>
+    <footer class="sales-footer shell"><a class="brand" href="#top"><span class="brand-mark">P</span><span>ПРОФЕССОР IT<small>DEVOPS / SRE MENTORSHIP</small></span></a><p>© 2026 · Профессор IT</p><a href="https://t.me/proffessor_it" target="_blank" rel="noreferrer">Telegram ↗</a></footer>
   </div>
 
   <script>
-    const progress = document.querySelector<HTMLElement>("[data-page-progress]");
-    const updateProgress = () => {
-      const height = document.documentElement.scrollHeight - innerHeight;
-      if (progress) progress.style.transform = `scaleX(${height > 0 ? scrollY / height : 0})`;
-    };
-    addEventListener("scroll", updateProgress, { passive: true });
-    updateProgress();
-
-    const reveal = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("visible");
-        reveal.unobserve(entry.target);
-      });
-    }, { threshold: 0.08, rootMargin: "0px 0px -6%" });
-    document.querySelectorAll(".reveal").forEach((element) => reveal.observe(element));
-
-    const tabs = document.querySelectorAll<HTMLButtonElement>("[data-track-tab]");
-    const panels = document.querySelectorAll<HTMLElement>("[data-track-panel]");
-    tabs.forEach((tab) => tab.addEventListener("click", () => {
-      const id = tab.dataset.trackTab;
-      tabs.forEach((item) => {
-        const active = item === tab;
-        item.classList.toggle("active", active);
-        item.setAttribute("aria-selected", String(active));
-      });
-      panels.forEach((panel) => {
-        const active = panel.dataset.trackPanel === id;
-        panel.hidden = !active;
-        panel.classList.toggle("active", active);
-      });
+    const progress = document.querySelector<HTMLElement>("[data-progress]");
+    const updateProgress = () => { const height = document.documentElement.scrollHeight - innerHeight; if (progress) progress.style.transform = `scaleX(${height > 0 ? scrollY / height : 0})`; };
+    addEventListener("scroll", updateProgress, { passive: true }); updateProgress();
+    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => { if (!entry.isIntersecting) return; entry.target.classList.add("visible"); observer.unobserve(entry.target); }), { threshold: 0.04, rootMargin: "0px 0px -5%" });
+    document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+    document.querySelectorAll<HTMLAnchorElement>("[data-cta]").forEach((link) => link.addEventListener("click", () => {
+      const eventId = crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`; const visitorId = localStorage.getItem("professorit_visitor_id") || eventId; localStorage.setItem("professorit_visitor_id", visitorId);
+      fetch("/api/public/events", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ event_id: eventId, event_type: "mentorship_cta_clicked", visitor_id: visitorId, path: location.pathname, meta: { href: link.href } }), keepalive: true }).catch(() => {});
     }));
-
-    document.querySelectorAll<HTMLDetailsElement>(".mentor-faq details").forEach((item) => {
-      item.addEventListener("toggle", () => {
-        if (!item.open) return;
-        document.querySelectorAll<HTMLDetailsElement>(".mentor-faq details").forEach((other) => {
-          if (other !== item) other.open = false;
-        });
-      });
-    });
-
-    document.querySelectorAll<HTMLAnchorElement>("[data-mentor-cta]").forEach((link) => {
-      link.addEventListener("click", () => {
-        const eventId = crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-        const visitorId = localStorage.getItem("professorit_visitor_id") || eventId;
-        localStorage.setItem("professorit_visitor_id", visitorId);
-        fetch("/api/public/events", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            event_id: eventId,
-            event_type: "mentorship_cta_clicked",
-            visitor_id: visitorId,
-            path: location.pathname,
-            meta: { href: link.href },
-          }),
-          keepalive: true,
-        }).catch(() => {});
-      });
-    });
   </script>
 </Base>
