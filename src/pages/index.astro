@@ -47,9 +47,10 @@ const jsonLd = {
     <header class="sales-header">
       <a class="brand" href="#top"><span class="brand-mark">P</span><span>ПРОФЕССОР IT<small>DEVOPS / SRE MENTORSHIP</small></span></a>
       <nav aria-label="Основная навигация">
-        <a href="#about">{adaptText(ui.navAbout)}</a><a href="#guarantees">{adaptText(ui.navGuarantees)}</a>
-        <a href="#library">{adaptText(ui.navLibrary)}</a><a href="#plans">{adaptText(ui.navPlans)}</a>
-        <a href="#reviews">{adaptText(ui.navReviews)}</a><a href="#results">{adaptText(ui.navJobOffers)}</a><a href="#faq">{adaptText(ui.navFaq)}</a>
+        <a href="#results">{adaptText(ui.navJobOffers)}</a><a href="#library">{adaptText(ui.navLibrary)}</a>
+        <a href="#roadmap">{adaptText(ui.navRoadmap)}</a><a href="#about">{adaptText(ui.navAbout)}</a>
+        <a href="#guarantees">{adaptText(ui.navGuarantees)}</a><a href="#plans">{adaptText(ui.navPlans)}</a>
+        <a href="#reviews">{adaptText(ui.navReviews)}</a><a href="#faq">{adaptText(ui.navFaq)}</a>
       </nav>
       <a class="button button-compact" href={ctaLink} target="_blank" rel="noreferrer" data-cta>{adaptText(s.ctaText)}</a>
     </header>
@@ -58,19 +59,11 @@ const jsonLd = {
       <section class="hero shell">
         <div class="hero-grid" aria-hidden="true"></div>
         <div class="hero-copy">
-          <span class="hero-kicker"><i></i> ЛИЧНОЕ МЕНТОРСТВО · DEVOPS / SRE</span>
+          <div class="badges">{s.badges.map((badge: Item) => <span class={`badge badge-${badge.color}`}><i>{badge.icon === "fire" ? "◆" : badge.icon === "ruble" ? "₽" : "✦"}</i>{adaptText(badge.text)}</span>)}</div>
           <h1>{adaptText(s.heroTitle)}</h1><p>{adaptText(s.heroSubtitle)}</p>
           <div class="hero-actions"><a class="button button-primary button-large" href={ctaLink} target="_blank" rel="noreferrer" data-cta>{adaptText(s.ctaText)} <span>↗</span></a><a class="text-link" href="#library">{adaptText(ui.heroSecondary)} <span>↓</span></a></div>
-          <div class="badges">{s.badges.map((badge: Item) => <span class={`badge badge-${badge.color}`}><i>{badge.icon === "fire" ? "◆" : badge.icon === "ruble" ? "₽" : "✦"}</i>{adaptText(badge.text)}</span>)}</div>
+          <div class="stats">{s.stats.map((stat: Item) => <span><b>{adaptText(stat.value)}</b><small>{adaptText(stat.label)}</small></span>)}</div>
         </div>
-        <div class="hero-console" aria-label="Система выхода на оффер">
-          <div class="console-grid"></div><div class="console-head"><span><i></i> OFFER SYSTEM / ACTIVE</span><b>PROFESSOR IT</b></div>
-          <div class="console-core"><small>ЦЕЛЕВОЙ РЕЗУЛЬТАТ</small><strong>ОФФЕР</strong><span>DEVOPS / SRE</span></div>
-          <div class="console-ring ring-a"></div><div class="console-ring ring-b"></div>
-          <div class="console-node node-1"><b>01</b><span>НАВЫКИ</span></div><div class="console-node node-2"><b>02</b><span>ЛЕГЕНДА</span></div><div class="console-node node-3"><b>03</b><span>СОБЕСЫ</span></div><div class="console-node node-4"><b>04</b><span>ОФФЕР</span></div>
-          <div class="console-data"><span>MARKET READY</span><span>MENTOR ONLINE</span><span>SUPPORT: ON</span></div>
-        </div>
-        <div class="stats">{s.stats.map((stat: Item) => <span><b>{adaptText(stat.value)}</b><small>{adaptText(stat.label)}</small></span>)}</div>
       </section>
 
       <section class="section section-dark reveal" id="about"><div class="shell">
