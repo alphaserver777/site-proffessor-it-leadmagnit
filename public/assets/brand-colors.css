@@ -122,6 +122,18 @@ footer a:has(> img.logo-mark[src*="professorit-mark"]) > span:last-child {
   display: none;
 }
 
+.footer-max-mark {
+  display: inline-grid;
+  width: 1.2rem;
+  height: 1.2rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--green) 48%, transparent);
+  border-radius: .35rem;
+  color: var(--green);
+  font: 700 .42rem/1 "Space Grotesk", sans-serif;
+  letter-spacing: -.04em;
+}
+
 main {
   position: relative;
   isolation: isolate;

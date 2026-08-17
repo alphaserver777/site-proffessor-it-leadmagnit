@@ -69,6 +69,7 @@ Astro формирует минимальную статическую обол�
 - `public/assets/about.js` — манифест и матрица возможностей;
 - `public/assets/faq.js` — категории, поиск и состояния FAQ;
 - `public/assets/final-cta.js` — финальная развилка и анимация оффера.
+- `public/assets/footer.js` — актуальные контакты Telegram/MAX и подпись MAX.
 
 Дополнительные скрипты работают как progressive DOM enhancement и не изменяют
 минифицированный frontend референса.
@@ -182,6 +183,7 @@ curl -I https://professorit.ru/mentorship/api/site.json
 - Страница: `https://professorit.ru/mentorship/`
 - Snapshot: `https://professorit.ru/mentorship/api/site.json`
 - Telegram CTA: `https://t.me/proffessor_it`
+- MAX: `https://max.ru/u/f9LHodD0cOKSwTkPJdylbGaluZM4miWZqbpMcBD7uTVI8UGfJLvPabOTi08`
 - Базовый URL сборки: переменная `PUBLIC_SITE_URL`
 - Path prefix: `/mentorship` в `astro.config.mjs`
 

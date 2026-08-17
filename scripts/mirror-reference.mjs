@@ -68,6 +68,13 @@ data.settings.brand = "Профессор IT";
 data.settings.logoUrl = "/mentorship/professorit-mark.png";
 data.settings.ctaLink = "https://t.me/proffessor_it";
 data.settings.ctaText = "Хочу на обучение";
+data.settings.contacts = {
+  telegram: "https://t.me/proffessor_it",
+  email: "",
+  whatsapp: "",
+  instagram: "",
+  website: "https://max.ru/u/f9LHodD0cOKSwTkPJdylbGaluZM4miWZqbpMcBD7uTVI8UGfJLvPabOTi08",
+};
 data.settings.heroTitle = "С нуля до оффера за 2 месяца в DevOps";
 data.settings.heroSubtitle = "Меня зовут Вадим — я кандидат технических наук, Senior DevOps-инженер и профессиональный хакер. У меня более 10 лет опыта в IT. Я лично помогу тебе освоить профессию, подготовиться к реальной работе и выйти на сильный оффер — даже если у тебя нет опыта.\n\nНикаких курсов и других кураторов. Стратегия обучения, практика, резюме, собеседования и испытательный срок — под моим сопровождением.";
 data.settings.badges = (data.settings.badges || []).map((badge) => {
