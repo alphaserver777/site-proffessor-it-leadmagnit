@@ -109,6 +109,60 @@ const enhanceFinalCta = () => {
 
   title.after(map);
   map.querySelector(".final-split-destination")?.append(action);
+
+  const connectors = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  connectors.classList.add("final-split-connectors");
+  connectors.setAttribute("aria-hidden", "true");
+  connectors.innerHTML = `
+    <defs>
+      <marker id="final-split-arrow-top" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 8 4 0 8" />
+      </marker>
+      <marker id="final-split-arrow-bottom" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0 0 8 4 0 8" />
+      </marker>
+    </defs>
+    <path class="final-split-connector final-split-connector-top" />
+    <path class="final-split-connector final-split-connector-bottom" />`;
+  map.append(connectors);
+
+  const syncConnectors = () => {
+    if (matchMedia("(max-width: 640px)").matches) return;
+    const choice = map.querySelector(".final-split-choice");
+    const maze = map.querySelector(".final-split-maze");
+    const trackLine = map.querySelector(".final-split-track-line");
+    if (!choice || !maze || !trackLine) return;
+
+    const mapRect = map.getBoundingClientRect();
+    const choiceRect = choice.getBoundingClientRect();
+    const mazeRect = maze.getBoundingClientRect();
+    const trackRect = trackLine.getBoundingClientRect();
+    connectors.setAttribute("viewBox", `0 0 ${mapRect.width} ${mapRect.height}`);
+
+    const start = {
+      x: choiceRect.right - mapRect.left,
+      y: choiceRect.top - mapRect.top + choiceRect.height / 2,
+    };
+    const topTarget = {
+      x: mazeRect.left - mapRect.left + 1,
+      y: mazeRect.top - mapRect.top + mazeRect.height * (69 / 145),
+    };
+    const bottomTarget = {
+      x: trackRect.left - mapRect.left + 1,
+      y: trackRect.top - mapRect.top + trackRect.height / 2,
+    };
+    const bendX = start.x + Math.min(48, Math.max(24, (topTarget.x - start.x) * .42));
+    const route = (target) => `M ${start.x} ${start.y} H ${bendX - 10} C ${bendX} ${start.y} ${bendX} ${target.y} ${bendX + 12} ${target.y} H ${target.x - 3}`;
+
+    connectors.querySelector(".final-split-connector-top")?.setAttribute("d", route(topTarget));
+    connectors.querySelector(".final-split-connector-bottom")?.setAttribute("d", route(bottomTarget));
+  };
+
+  requestAnimationFrame(syncConnectors);
+  const connectorObserver = new ResizeObserver(syncConnectors);
+  connectorObserver.observe(map);
+  connectorObserver.observe(map.querySelector(".final-split-maze"));
+  connectorObserver.observe(map.querySelector(".final-split-track"));
   return true;
 };
 
