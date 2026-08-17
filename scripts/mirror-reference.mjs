@@ -5,6 +5,7 @@ const source = "https://site.criminalit.ru";
 const root = new URL("../", import.meta.url).pathname;
 const assetsDir = join(root, "public", "assets");
 const apiDir = join(root, "public", "api");
+const offerMediaDir = join(root, "public", "media", "offers");
 await mkdir(assetsDir, { recursive: true });
 await mkdir(apiDir, { recursive: true });
 
@@ -66,6 +67,39 @@ const data = adapt(await (await get("/api/site")).json());
 data.settings.brand = "Профессор IT";
 data.settings.ctaLink = "https://t.me/proffessor_it";
 data.settings.ctaText = data.settings.ctaText || "Хочу на обучение";
+
+const offerImageDownloads = new Map();
+for (const offer of data.settings.jobOffers || []) {
+  if (!offer.image || !/^https?:\/\//i.test(offer.image)) continue;
+  const remoteUrl = new URL(offer.image);
+  const filename = remoteUrl.pathname.split("/").filter(Boolean).at(-1);
+  if (!filename || !/^[a-zA-Z0-9._-]+$/.test(filename)) {
+    throw new Error(`Unsupported offer image path: ${offer.image}`);
+  }
+  if (!offerImageDownloads.has(offer.image)) {
+    offerImageDownloads.set(offer.image, { filename, remoteUrl });
+  }
+  offer.image = `/mentorship/media/offers/${filename}`;
+}
+
+const downloadedOfferImages = await Promise.all(
+  [...offerImageDownloads.values()].map(async ({ filename, remoteUrl }) => {
+    const response = await fetch(remoteUrl);
+    if (!response.ok) throw new Error(`${remoteUrl}: HTTP ${response.status}`);
+    const contentType = response.headers.get("content-type") || "";
+    if (!contentType.toLowerCase().startsWith("image/")) {
+      throw new Error(`${remoteUrl}: expected image, received ${contentType || "unknown content type"}`);
+    }
+    const bytes = Buffer.from(await response.arrayBuffer());
+    if (bytes.length === 0) throw new Error(`${remoteUrl}: empty image`);
+    return { filename, bytes };
+  }),
+);
+
+await mkdir(offerMediaDir, { recursive: true });
+for (const { filename, bytes } of downloadedOfferImages) {
+  await writeFile(join(offerMediaDir, filename), bytes);
+}
 
 const sourcePlan = (data.settings.plans || []).find((plan) => plan.highlighted) || data.settings.plans?.[0];
 if (!sourcePlan) throw new Error("Reference pricing plan was not found");
@@ -131,4 +165,4 @@ data.settings.ui.reviewsWriteStudent = "";
 data.settings.ui.reviewsFootnote = "";
 await writeFile(join(apiDir, "site.json"), JSON.stringify(data));
 
-console.log(`Mirrored ${importedChunks.length + cssAssets.length + 5} assets and source revision ${data.rev}`);
+console.log(`Mirrored ${importedChunks.length + cssAssets.length + 5} assets, ${downloadedOfferImages.length} offer images and source revision ${data.rev}`);
