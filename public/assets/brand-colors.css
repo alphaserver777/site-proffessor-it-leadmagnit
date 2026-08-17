@@ -3151,11 +3151,17 @@ a[href="#library"] {
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
   overflow: visible !important;
 }
 
 .final-split-panel::before {
   display: none;
+}
+
+.final-split-panel > .pointer-events-none.absolute.inset-0 {
+  display: none !important;
 }
 
 .final-split-panel::after {
@@ -3406,7 +3412,7 @@ a[href="#library"] {
 .final-split-track-line {
   position: absolute;
   z-index: 0;
-  left: 9.6%;
+  left: 0;
   right: 12%;
   top: 50%;
   height: 1px;
