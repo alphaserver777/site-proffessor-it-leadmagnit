@@ -3199,6 +3199,7 @@ a[href="#library"] {
   align-content: center;
   gap: .45rem;
   background: linear-gradient(90deg, rgba(85, 217, 255, .07), rgba(98, 239, 187, .025), transparent);
+  transform: translateY(var(--final-split-choice-offset, 0));
 }
 
 .final-split-choice::after {
@@ -3581,6 +3582,7 @@ a[href="#library"] {
     grid-column: 1;
     grid-row: 1;
     min-height: 5.5rem;
+    transform: none;
   }
 
   .final-split-choice::after {

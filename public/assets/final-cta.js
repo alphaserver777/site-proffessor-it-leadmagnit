@@ -36,11 +36,6 @@ const enhanceFinalCta = () => {
   const faqSection = document.querySelector("#faq");
   if (faqSection) faqSection.before(section);
 
-  const eyebrow = document.createElement("div");
-  eyebrow.className = "final-cta-eyebrow final-journey-eyebrow final-choice-eyebrow final-split-eyebrow";
-  eyebrow.innerHTML = '<span>Финальный выбор</span>';
-  title.before(eyebrow);
-
   const textNode = [...link.childNodes].find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
   if (textNode) textNode.textContent = "Оффер";
   const action = link.parentElement;
@@ -133,10 +128,6 @@ const enhanceFinalCta = () => {
     const trackRect = trackLine.getBoundingClientRect();
     connectors.setAttribute("viewBox", `0 0 ${mapRect.width} ${mapRect.height}`);
 
-    const start = {
-      x: choiceRect.right - mapRect.left,
-      y: choiceRect.top - mapRect.top + choiceRect.height / 2,
-    };
     const topTarget = {
       x: mazeRect.left - mapRect.left + 1,
       y: mazeRect.top - mapRect.top + mazeRect.height * (69 / 145),
@@ -144,6 +135,14 @@ const enhanceFinalCta = () => {
     const bottomTarget = {
       x: trackRect.left - mapRect.left + 1,
       y: trackRect.top - mapRect.top + trackRect.height / 2,
+    };
+    const currentOffset = Number.parseFloat(getComputedStyle(choice).getPropertyValue("--final-split-choice-offset")) || 0;
+    const baseChoiceY = choiceRect.top - mapRect.top + choiceRect.height / 2 - currentOffset;
+    const choiceOffset = (topTarget.y + bottomTarget.y) / 2 - baseChoiceY;
+    choice.style.setProperty("--final-split-choice-offset", `${choiceOffset}px`);
+    const start = {
+      x: choiceRect.right - mapRect.left,
+      y: (topTarget.y + bottomTarget.y) / 2,
     };
     const bendX = start.x + Math.min(48, Math.max(24, (topTarget.x - start.x) * .42));
     const route = (target) => `M ${start.x} ${start.y} H ${bendX - 10} C ${bendX} ${start.y} ${bendX} ${target.y} ${bendX + 12} ${target.y} H ${target.x - 5}`;
