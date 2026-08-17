@@ -1,49 +1,160 @@
 ---
-const title = "Профессор IT — менторство в IT";
-const description = "Профессор IT — личное менторство в IT: путь в DevOps/SRE с нуля до оффера, видео-материалы прямо на сайте.";
-const canonical = new URL(Astro.url.pathname, Astro.site);
+import Base from "../layouts/Base.astro";
+import "../styles/site.css";
+import { data, orderedSections } from "../data/reference";
+
+const s = data.settings;
+const ui = s.ui;
+const title = "Профессор IT — с нуля до оффера в DevOps";
+const description = s.heroSubtitle.replace(/\s+/g, " ").trim();
+const [heroLead, ...heroRest] = s.heroTitle.split(" за ");
+const heroTail = heroRest.length ? `за ${heroRest.join(" за ")}` : "";
+const aboutParagraphs = s.about.split(/\n\s*\n/).filter(Boolean);
+const sectionLessons = orderedSections.map((section) => ({ ...section, preview: section.lessons.slice(0, 4) }));
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Person", name: "Вадим Моисеенко", jobTitle: "DevOps / SRE наставник", url: "https://professorit.ru/mentorship/" },
+    { "@type": "Service", name: "DevOps-наставничество под ключ", provider: { "@type": "Person", name: "Вадим Моисеенко" } },
+    { "@type": "FAQPage", mainEntity: s.faq.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })) },
+  ],
+};
 ---
 
-<!doctype html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/png" sizes="32x32" href="/mentorship/favicon.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/mentorship/apple-touch-icon.png" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Профессор IT" />
-    <meta property="og:title" content="Профессор IT — с нуля до оффера в DevOps" />
-    <meta property="og:description" content="Личное менторство: спринты, живая практика в своей коробке, разборы с бадди и выход на оффер." />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:image" content="https://professorit.ru/mentorship/logo.jpg" />
-    <meta property="og:locale" content="ru_RU" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Профессор IT — с нуля до оффера в DevOps" />
-    <meta name="twitter:description" content="Личное менторство: спринты, живая практика в своей коробке, разборы с бадди и выход на оффер." />
-    <meta name="twitter:image" content="https://professorit.ru/mentorship/logo.jpg" />
-    <style is:inline>
-      @media (min-width: 1024px) {
-        header nav > div:nth-child(2) > a {
-          padding-left: 0.5rem;
-          padding-right: 0.5rem;
-        }
-      }
-    </style>
-    <script is:inline>
-      (() => {
-        let preference = "system";
-        try { preference = localStorage.getItem("ment_theme") || "system"; } catch { preference = "system"; }
-        const dark = preference === "dark" || (preference === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
-        document.documentElement.dataset.theme = dark ? "dark" : "light";
-        document.documentElement.dataset.themePreference = preference;
-      })();
-    </script>
-    <script is:inline type="module" crossorigin="anonymous" src="/mentorship/assets/reference-app.js"></script>
-    <link rel="stylesheet" crossorigin="anonymous" href="/mentorship/assets/reference.css" />
-  </head>
-  <body><div id="root"></div></body>
-</html>
+<Base {title} {description}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <div class="engineering-site" id="top">
+    <div class="page-progress" aria-hidden="true"><span data-progress></span></div>
+    <header class="site-header">
+      <nav class="container-page header-inner" aria-label="Основная навигация">
+        <a class="brand" href="#top" aria-label="Профессор IT — наверх">
+          <img src="/mentorship/logo.jpg" alt="" width="36" height="36" />
+          <span>Профессор IT</span>
+        </a>
+        <div class="desktop-nav">
+          <a href="#joboffers">{ui.navJobOffers}</a><a href="#library">{ui.navLibrary}</a>
+          <a href="#roadmap">{ui.navRoadmap}</a><a href="#about">{ui.navAbout}</a>
+          <a href="#guarantees">{ui.navGuarantees}</a><a href="#plans">{ui.navPlans}</a>
+          <a href="#reviews">{ui.navReviews}</a><a href="#faq">{ui.navFaq}</a>
+        </div>
+        <div class="header-actions">
+          <span class="system-status"><i></i> SYSTEM ONLINE</span>
+          <a class="button button-small" href="#plans">{s.ctaText}<b>↗</b></a>
+          <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="mobile-menu" aria-label="Открыть меню"><span></span><span></span><span></span></button>
+        </div>
+      </nav>
+      <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+        <a href="#joboffers">{ui.navJobOffers}</a><a href="#library">{ui.navLibrary}</a>
+        <a href="#roadmap">{ui.navRoadmap}</a><a href="#about">{ui.navAbout}</a>
+        <a href="#guarantees">{ui.navGuarantees}</a><a href="#plans">{ui.navPlans}</a>
+        <a href="#reviews">{ui.navReviews}</a><a href="#faq">{ui.navFaq}</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container-page" aria-labelledby="hero-title">
+        <div class="hero-orbit" aria-hidden="true"></div>
+        <div class="badges reveal-group">
+          {s.badges.map((badge) => <span class={`badge badge-${badge.color}`}><i>{badge.icon === "fire" ? "◆" : badge.icon === "ruble" ? "₽" : "✦"}</i>{badge.text}</span>)}
+        </div>
+        <h1 id="hero-title" class="reveal">{heroLead}{heroTail && <><br />{heroTail}</>}</h1>
+        <p class="hero-lead reveal">{s.heroSubtitle}</p>
+        <div class="hero-actions reveal">
+          <a class="button button-primary button-large" href={s.ctaLink} target="_blank" rel="noopener noreferrer">{s.ctaText}<b>↗</b></a>
+          <a class="button button-ghost button-large" href="#library"><span>▷</span>{ui.heroSecondary}</a>
+        </div>
+        <div class="stats reveal-group">
+          {s.stats.map((stat) => <div><strong>{stat.value}</strong><span>{stat.label}</span></div>)}
+        </div>
+      </section>
+
+      <section class="section offers-section" id="joboffers">
+        <div class="container-page">
+          <div class="section-head section-head-wide reveal">
+            <div><span class="eyebrow">RESULTS / VERIFIED</span><h2>{ui.jobOffersTitle}</h2><p>{ui.jobOffersSubtitle}</p></div>
+            <div class="carousel-controls"><button type="button" data-scroll="offers" data-direction="-1" aria-label="Предыдущие офферы">←</button><button type="button" data-scroll="offers" data-direction="1" aria-label="Следующие офферы">→</button></div>
+          </div>
+          <div class="carousel" data-carousel="offers">
+            {s.jobOffers.map((offer, index) => <article class="offer-card reveal-item">
+              <a href={offer.image} target="_blank" rel="noopener noreferrer" aria-label={`Открыть оффер ${offer.company || index + 1}`}><img src={offer.image} alt={`${offer.company} · ${offer.role}`} loading="lazy" /></a>
+              <div class="card-copy"><small>OFFER / {String(index + 1).padStart(2, "0")}</small><strong>{offer.amount}</strong>{offer.company && <h3>{offer.company}</h3>}<span>{offer.role}</span><p>{offer.note}</p></div>
+            </article>)}
+          </div>
+        </div>
+      </section>
+
+      <section class="section container-page" id="library">
+        <div class="section-head section-head-wide reveal">
+          <div><span class="eyebrow">{ui.libraryEyebrow || "VIDEO ARCHIVE"}</span><h2>{ui.libraryTitle}</h2><p>{ui.librarySubtitle.replace("{count}", String(data.lessons.length))}</p></div>
+          <button class="button button-primary" type="button" data-video-src={data.lessons[0]?.videoUrl} data-video-title={data.lessons[0]?.title}>{ui.libraryButton}<b>↗</b></button>
+        </div>
+        <div class="library-grid">
+          {sectionLessons.map((section, sectionIndex) => <article class="library-card reveal-item">
+            <div class="library-title"><div><small>ARCHIVE / {String(sectionIndex + 1).padStart(2, "0")}</small><h3>{section.title}</h3></div><b>{section.lessons.length} видео</b></div>
+            <p>{section.description}</p>
+            <div class="lesson-list">
+              {section.preview.map((lesson) => <button type="button" data-video-src={lesson.videoUrl} data-video-title={lesson.title}><i>▶</i><span>{lesson.title}</span><small>{lesson.duration}</small></button>)}
+            </div>
+            {section.lessons.length > section.preview.length && <button class="more-lessons" type="button" data-section-open={section.id}>+{section.lessons.length - section.preview.length} ещё →</button>}
+            <div class="extra-lessons" data-section={section.id} hidden>
+              {section.lessons.slice(4).map((lesson) => <button type="button" data-video-src={lesson.videoUrl} data-video-title={lesson.title}><i>▶</i><span>{lesson.title}</span><small>{lesson.duration}</small></button>)}
+            </div>
+          </article>)}
+        </div>
+      </section>
+
+      <section class="section container-page" id="roadmap">
+        <div class="section-head section-head-center reveal"><span class="eyebrow">{ui.roadmapEyebrow || "ROADMAP"}</span><h2>{ui.roadmapTitle}</h2><p>{ui.roadmapSubtitle}</p></div>
+        <div class="roadmap-list">
+          {s.roadmap.map((item, index) => <article class="roadmap-card reveal-item"><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{item.title}</h3><p>{item.text}</p></div><i aria-hidden="true"></i></article>)}
+        </div>
+      </section>
+
+      <section class="section container-page" id="about">
+        <div class="about-grid">
+          <div class="reveal"><div class="section-head"><span class="eyebrow">{ui.aboutEyebrow || "ОБ ОБУЧЕНИИ"}</span><h2>{ui.aboutTitle}</h2></div><div class="about-copy">{aboutParagraphs.map((paragraph) => <p>{paragraph}</p>)}</div></div>
+          <div class="skills-panel reveal"><span class="eyebrow">{ui.aboutSkillsLabel}</span><div class="skills-cloud">{s.skills.map((skill, index) => <span><i>{String(index + 1).padStart(2, "0")}</i>{skill}</span>)}</div></div>
+        </div>
+      </section>
+
+      <section class="section container-page" id="guarantees">
+        <div class="section-head section-head-center reveal"><span class="eyebrow">SLA / CONTRACT</span><h2>{ui.guaranteesTitle}</h2>{ui.guaranteesSubtitle && <p>{ui.guaranteesSubtitle}</p>}</div>
+        <div class="guarantees-grid">
+          {s.guarantees.map((item, index) => <article class="guarantee-card reveal-item"><span class="guarantee-icon">{item.icon === "refund" ? "↶" : "◇"}</span><div><small>GUARANTEE / {String(index + 1).padStart(2, "0")}</small><h3>{item.title}</h3><p>{item.text}</p></div></article>)}
+          <article class="guarantee-card documents-card reveal-item"><span class="guarantee-icon">▤</span><div class="documents-copy"><small>LEGAL / DOCUMENTS</small><h3>{ui.documentsTitle}</h3><p>{ui.documentsSubtitle}</p></div><div class="document-links">{s.documents.map((doc) => <a href={doc.url} target="_blank" rel="noopener noreferrer"><span>{doc.label}</span><b>↓</b></a>)}</div></article>
+        </div>
+      </section>
+
+      <section class="section container-page" id="plans">
+        <div class="section-head section-head-center reveal"><span class="eyebrow">{ui.plansEyebrow}</span><h2>{ui.plansTitle}</h2><p>{ui.plansSubtitle}</p><div class="plans-payment">{s.paymentMethods.map((method) => <span><img src={method.image} alt="" loading="lazy" />{method.label}</span>)}</div></div>
+        <div class="plans-grid">
+          {s.plans.map((plan, index) => <article class:list={["plan-card reveal-item", { featured: plan.highlighted }]}>{plan.highlighted && <span class="popular">{ui.plansPopular}</span>}<small>CONFIG / {String(index + 1).padStart(2, "0")}</small><h3>{plan.name}</h3><strong>{plan.price}</strong><p class="period">{plan.period}</p><ul>{plan.features.map((feature) => <li><i>✓</i>{feature}</li>)}</ul><a class:list={["button button-large", plan.highlighted ? "button-light" : "button-primary"]} href={plan.ctaLink || s.ctaLink} target="_blank" rel="noopener noreferrer">{plan.cta}<b>↗</b></a></article>)}
+        </div>
+      </section>
+
+      <section class="section reviews-section" id="reviews">
+        <div class="container-page">
+          <div class="section-head section-head-wide reveal"><div><span class="eyebrow">{ui.reviewsEyebrow}</span><h2>{ui.reviewsTitle}</h2><p>{ui.reviewsFootnote}</p></div><div class="carousel-controls"><button type="button" data-scroll="reviews" data-direction="-1" aria-label="Предыдущие отзывы">←</button><button type="button" data-scroll="reviews" data-direction="1" aria-label="Следующие отзывы">→</button></div></div>
+          <div class="carousel review-carousel" data-carousel="reviews">
+            {s.reviews.map((review, index) => <article class="review-card reveal-item"><small>STUDENT / {String(index + 1).padStart(2, "0")}</small><h3>{review.name}</h3><span>{review.role}</span>{review.offerSummary && <strong>{review.offerSummary}</strong>}<details><summary>{ui.reviewsReadMore}<i>+</i></summary><p>{review.text}</p></details><div class="review-foot">{review.finalOffer && <b>{review.finalOffer}</b>}{review.link?.startsWith("http") && <a href={review.link.trim()} target="_blank" rel="noopener noreferrer">{ui.reviewsWriteStudent} ↗</a>}</div></article>)}
+          </div>
+        </div>
+      </section>
+
+      <section class="section container-page" id="faq">
+        <div class="section-head section-head-center reveal"><span class="eyebrow">{ui.faqEyebrow}</span><h2>{ui.faqTitle}</h2></div>
+        <div class="faq-list">{s.faq.map((item, index) => <details class="reveal-item"><summary><span>{String(index + 1).padStart(2, "0")}</span><b>{item.q}</b><i>+</i></summary><p>{item.a}</p></details>)}</div>
+      </section>
+
+      <section class="final-cta container-page reveal"><span class="eyebrow">NEXT / START</span><h2>{ui.ctaTitle}</h2><p>{ui.ctaSubtitle}</p><a class="button button-light button-large" href={s.ctaLink} target="_blank" rel="noopener noreferrer">{s.ctaText}<b>↗</b></a></section>
+    </main>
+
+    <footer class="site-footer"><div class="container-page footer-inner"><a class="brand" href="#top"><img src="/mentorship/logo.jpg" alt="" width="36" height="36" /><span>Профессор IT</span></a><span>© 2026 · ENGINEERING MENTORSHIP</span><a href={s.ctaLink} target="_blank" rel="noopener noreferrer">Telegram ↗</a></div></footer>
+  </div>
+
+  <dialog class="video-dialog" data-video-dialog><button type="button" data-video-close aria-label="Закрыть">×</button><div><span class="eyebrow">VIDEO / ARCHIVE</span><h2 data-video-heading></h2><video controls playsinline preload="metadata" data-video-player></video></div></dialog>
+
+  <script>
+    import "../scripts/mentorship";
+  </script>
+</Base>
