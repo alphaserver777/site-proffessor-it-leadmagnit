@@ -1,0 +1,93 @@
+/* Professor IT palette only. Layout and component geometry stay in reference.css. */
+:root,
+:root[data-mono=on] {
+  --grid-line: rgba(13, 118, 145, .07);
+  --scanline: rgba(13, 118, 145, .035);
+  --spot-rgb: 25 126 151;
+  --spot-alpha: .075;
+  --bg: #eef5f7;
+  --bg-accent: #e4f1f3;
+  --surface: rgba(255, 255, 255, .88);
+  --surface-solid: #ffffff;
+  --surface-soft: #edf5f6;
+  --surface-muted: #f5f9fa;
+  --surface-raised: #ffffff;
+  --field: #ffffff;
+  --ink: #071019;
+  --muted: #607386;
+  --text-soft: #364b5c;
+  --line: rgba(18, 91, 111, .11);
+  --line-strong: rgba(18, 91, 111, .22);
+  --avatar-bg: linear-gradient(135deg, #bceefa, #c8f5e5);
+  --track: #d7e8ec;
+  --info-bg: #e9f7fb;
+  --info-border: #9bd9e9;
+  --success-bg: #e8faf3;
+  --success-border: #9fe5c9;
+  --teal: #159fbd;
+  --blue: #168eae;
+  --violet: #477f98;
+  --orange: #b27a24;
+  --red: #d4495d;
+  --green: #15956c;
+  --btn-primary-text: #041014;
+  --primary-text: #041014;
+  --accent-from: #28b9dc;
+  --accent-via: #43d6cc;
+  --accent-to: #52dca9;
+  --accent: linear-gradient(120deg, var(--accent-from), var(--accent-via) 55%, var(--accent-to));
+  --accent-soft: linear-gradient(120deg, rgba(40, 185, 220, .14), rgba(67, 214, 204, .14) 55%, rgba(82, 220, 169, .14));
+  --panel-dark: linear-gradient(150deg, #071019, #102532);
+  --panel-dark-solid: #071019;
+  --ring: rgba(22, 142, 174, .34);
+}
+
+:root[data-theme=dark],
+:root[data-mono=on][data-theme=dark] {
+  --grid-line: rgba(85, 217, 255, .055);
+  --scanline: rgba(85, 217, 255, .028);
+  --spot-rgb: 85 217 255;
+  --spot-alpha: .075;
+  --bg: #070a10;
+  --bg-accent: #0b121d;
+  --surface: rgba(13, 18, 28, .76);
+  --surface-solid: #0d121c;
+  --surface-soft: #111928;
+  --surface-muted: #090e16;
+  --surface-raised: #121b29;
+  --field: #0a1018;
+  --ink: #eef4ff;
+  --muted: #8f9bad;
+  --text-soft: #c5d1df;
+  --line: rgba(109, 169, 211, .11);
+  --line-strong: rgba(109, 169, 211, .22);
+  --avatar-bg: linear-gradient(135deg, #123b4d, #145441);
+  --track: #192536;
+  --info-bg: #0d2634;
+  --info-border: #24566b;
+  --success-bg: #0c281e;
+  --success-border: #24674f;
+  --danger-bg: #2a1319;
+  --danger-border: #66303d;
+  --warm-bg: #291f10;
+  --warm-border: #60491f;
+  --teal: #55d9ff;
+  --blue: #55d9ff;
+  --violet: #79cfe7;
+  --orange: #e7b65c;
+  --red: #ff668c;
+  --green: #62efbb;
+  --btn-primary-text: #041014;
+  --primary-text: #041014;
+  --success-text: #04120c;
+  --accent-from: #55d9ff;
+  --accent-via: #54e3d3;
+  --accent-to: #62efbb;
+  --accent: linear-gradient(120deg, var(--accent-from), var(--accent-via) 55%, var(--accent-to));
+  --accent-soft: linear-gradient(120deg, rgba(85, 217, 255, .15), rgba(84, 227, 211, .15) 55%, rgba(98, 239, 187, .15));
+  --panel-dark: linear-gradient(150deg, #071019, #102532);
+  --panel-dark-solid: #071019;
+  --ring: rgba(85, 217, 255, .38);
+  --glass: rgba(10, 16, 25, .76);
+  --glass-border: rgba(109, 169, 211, .13);
+}
