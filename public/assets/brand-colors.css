@@ -97,6 +97,31 @@
   display: none !important;
 }
 
+/* Use the compact part of the supplied logo beside the readable brand name in
+   the header; the complete lockup has enough room to breathe in the footer. */
+img.logo-mark[src*="professorit-mark"] {
+  width: 2.75rem !important;
+  height: 2.75rem !important;
+  border-radius: 0 !important;
+  object-fit: contain !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 7px 12px rgba(1, 8, 16, .18));
+}
+
+footer img.logo-mark[src*="professorit-mark"] {
+  content: url("/mentorship/professorit-logo.webp");
+  width: 9rem !important;
+  height: 6.75rem !important;
+}
+
+footer a:has(> img.logo-mark[src*="professorit-mark"]) {
+  gap: 0;
+}
+
+footer a:has(> img.logo-mark[src*="professorit-mark"]) > span:last-child {
+  display: none;
+}
+
 main {
   position: relative;
   isolation: isolate;

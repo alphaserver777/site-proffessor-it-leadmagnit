@@ -65,6 +65,7 @@ const adapt = (value) => {
 
 const data = adapt(await (await get("/api/site")).json());
 data.settings.brand = "Профессор IT";
+data.settings.logoUrl = "/mentorship/professorit-mark.png";
 data.settings.ctaLink = "https://t.me/proffessor_it";
 data.settings.ctaText = "Хочу оффер";
 data.settings.heroTitle = "С нуля до оффера за 2 месяца в DevOps";
