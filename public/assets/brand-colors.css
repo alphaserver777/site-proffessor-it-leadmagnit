@@ -1757,12 +1757,12 @@ a[href="#library"] {
 .final-journey-head {
   position: relative;
   display: grid;
-  grid-template-columns: 10.5rem 1fr 7rem;
+  grid-template-columns: 10rem 1fr 7rem;
   min-height: 2.7rem;
   padding: 0 1.1rem;
   border-bottom: 1px solid rgba(109, 169, 211, .1);
   color: rgba(143, 155, 173, .5);
-  font: 700 .53rem/2.7rem ui-monospace, SFMono-Regular, Menlo, monospace;
+  font: 700 .6rem/2.7rem ui-monospace, SFMono-Regular, Menlo, monospace;
   letter-spacing: .13em;
   text-transform: uppercase;
 }
@@ -1778,7 +1778,7 @@ a[href="#library"] {
 .final-journey-map {
   position: relative;
   display: grid;
-  grid-template-columns: 10.5rem minmax(0, 1fr);
+  grid-template-columns: 10rem minmax(0, 1fr);
   grid-template-rows: auto auto;
   padding: 1.1rem;
   gap: .8rem 1.2rem;
@@ -1787,7 +1787,7 @@ a[href="#library"] {
 .final-journey-map::before {
   content: "";
   position: absolute;
-  left: 10.9rem;
+  left: 11.7rem;
   top: 25%;
   bottom: 25%;
   width: 1px;
@@ -1815,7 +1815,7 @@ a[href="#library"] {
   position: absolute;
   left: 100%;
   top: 50%;
-  width: 1.65rem;
+  width: .6rem;
   height: 1px;
   background: var(--blue);
   box-shadow: 0 0 8px rgba(85, 217, 255, .45);
@@ -1847,10 +1847,26 @@ a[href="#library"] {
 .final-maze-path {
   position: relative;
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid rgba(109, 169, 211, .1);
   border-radius: .9rem;
   background: rgba(6, 14, 23, .43);
+}
+
+.final-direct-path::before,
+.final-maze-path::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  width: .6rem;
+  height: 1px;
+  background: rgba(109, 169, 211, .25);
+}
+
+.final-direct-path::before {
+  background: var(--blue);
+  box-shadow: 0 0 8px rgba(85, 217, 255, .4);
 }
 
 .final-direct-path {
@@ -1871,7 +1887,7 @@ a[href="#library"] {
 .final-direct-path header span,
 .final-maze-path header span {
   color: var(--blue);
-  font: 750 .58rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  font: 750 .64rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
   letter-spacing: .09em;
   text-transform: uppercase;
 }
@@ -1883,7 +1899,7 @@ a[href="#library"] {
 .final-direct-path header small,
 .final-maze-path header small {
   color: rgba(143, 155, 173, .56);
-  font: 650 .52rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  font: 650 .58rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .final-direct-track {
@@ -1916,7 +1932,7 @@ a[href="#library"] {
   text-align: center;
 }
 
-.final-direct-step > span {
+.final-direct-step > span:first-child {
   display: grid;
   place-items: center;
   width: 1.05rem;
@@ -1930,10 +1946,10 @@ a[href="#library"] {
 }
 
 .final-direct-step strong {
-  font: 650 .55rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  font: 650 .61rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-.final-direct-step.is-offer > span {
+.final-direct-step.is-offer > span:first-child {
   background: var(--green);
   box-shadow: 0 0 0 3px rgba(98, 239, 187, .09), 0 0 13px rgba(98, 239, 187, .4);
 }
@@ -1955,6 +1971,7 @@ a[href="#library"] {
   background: var(--green);
   box-shadow: 0 0 18px rgba(98, 239, 187, .42);
   font: 900 .68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  animation: final-offer-coin 5.2s ease-in-out infinite;
 }
 
 .final-direct-signal {
@@ -1967,8 +1984,36 @@ a[href="#library"] {
   border-radius: 50%;
   background: #eefcff;
   box-shadow: 0 0 0 3px rgba(85, 217, 255, .12), 0 0 13px rgba(85, 217, 255, .75);
+  transform: translateX(-50%);
   animation: final-direct-travel 5.2s cubic-bezier(.45, 0, .2, 1) infinite;
 }
+
+.final-money-burst {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: .55rem;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.final-money-burst i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--green);
+  font: 850 .68rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  opacity: 0;
+  text-shadow: 0 0 10px rgba(98, 239, 187, .65);
+  animation: final-money-burst 5.2s cubic-bezier(.22, 1, .36, 1) infinite;
+}
+
+.final-money-burst i:nth-child(2) { animation-delay: .035s; color: #dfffa4; }
+.final-money-burst i:nth-child(3) { animation-delay: .07s; }
+.final-money-burst i:nth-child(4) { animation-delay: .105s; color: #dfffa4; }
+.final-money-burst i:nth-child(5) { animation-delay: .14s; }
+.final-money-burst i:nth-child(6) { animation-delay: .175s; color: #dfffa4; }
 
 .final-maze-canvas {
   position: relative;
@@ -2005,7 +2050,7 @@ a[href="#library"] {
   border: 1px solid rgba(109, 169, 211, .09);
   border-radius: .35rem;
   background: rgba(9, 17, 27, .84);
-  font: 650 .49rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  font: 650 .55rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
   white-space: nowrap;
 }
 
@@ -2032,8 +2077,19 @@ a[href="#library"] {
 @keyframes final-direct-travel {
   0%, 8% { left: 12.5%; opacity: 0; }
   14% { opacity: 1; }
-  78% { left: calc(87.5% - .62rem); opacity: 1; }
-  88%, 100% { left: calc(87.5% - .62rem); opacity: 0; }
+  78% { left: 87.5%; opacity: 1; }
+  88%, 100% { left: 87.5%; opacity: 0; }
+}
+
+@keyframes final-money-burst {
+  0%, 76% { opacity: 0; transform: translate(0, 0) rotate(0); }
+  80% { opacity: 1; }
+  94%, 100% { opacity: 0; transform: translate(var(--money-x), var(--money-y)) rotate(var(--money-r)); }
+}
+
+@keyframes final-offer-coin {
+  0%, 75%, 94%, 100% { transform: scale(1); box-shadow: 0 0 18px rgba(98, 239, 187, .42); }
+  80% { transform: scale(1.18); box-shadow: 0 0 28px rgba(98, 239, 187, .72); }
 }
 
 @media (max-width: 760px) {
@@ -2049,6 +2105,11 @@ a[href="#library"] {
   }
 
   .final-journey-map::before {
+    display: none;
+  }
+
+  .final-direct-path::before,
+  .final-maze-path::before {
     display: none;
   }
 
@@ -2103,6 +2164,14 @@ a[href="#library"] {
 @media (prefers-reduced-motion: reduce) {
   .final-direct-signal {
     display: none;
+    animation: none !important;
+  }
+
+  .final-money-burst {
+    display: none;
+  }
+
+  .final-direct-step.is-offer b {
     animation: none !important;
   }
 }

@@ -17,6 +17,7 @@ const enhanceFinalCta = () => {
   copy.classList.add("final-cta-copy", "final-journey-copy");
   title.classList.add("final-cta-title", "final-journey-title");
   subtitle.classList.add("final-cta-subtitle", "final-journey-subtitle");
+  title.textContent = title.textContent.trim().replace(/\s+([.!?,])/g, "$1");
 
   const eyebrow = document.createElement("div");
   eyebrow.className = "final-cta-eyebrow final-journey-eyebrow";
@@ -40,7 +41,17 @@ const enhanceFinalCta = () => {
         <div class="final-direct-track">
           <i class="final-direct-signal" aria-hidden="true"></i>
           ${directSteps.map((step, index) => `<div class="final-direct-step"><span>0${index + 1}</span><strong>${step}</strong></div>`).join("")}
-          <div class="final-direct-step is-offer"><span>04</span><strong>Оффер</strong><b>₽</b></div>
+          <div class="final-direct-step is-offer">
+            <span>04</span><strong>Оффер</strong><b>₽</b>
+            <span class="final-money-burst" aria-hidden="true">
+              <i style="--money-x:-2.3rem;--money-y:-2.3rem;--money-r:-18deg">₽</i>
+              <i style="--money-x:-.8rem;--money-y:-3.1rem;--money-r:12deg">₽</i>
+              <i style="--money-x:1rem;--money-y:-2.8rem;--money-r:-9deg">₽</i>
+              <i style="--money-x:2.35rem;--money-y:-2rem;--money-r:20deg">₽</i>
+              <i style="--money-x:-2.7rem;--money-y:-.65rem;--money-r:15deg">₽</i>
+              <i style="--money-x:2.8rem;--money-y:-.45rem;--money-r:-14deg">₽</i>
+            </span>
+          </div>
         </div>
       </section>
       <section class="final-maze-path" aria-label="Самостоятельный маршрут с неопределённым сроком и тупиками">
@@ -67,7 +78,7 @@ const enhanceFinalCta = () => {
   action?.classList.add("final-cta-action", "final-journey-action");
   const note = document.createElement("p");
   note.className = "final-cta-note final-journey-note";
-  note.innerHTML = '<span aria-hidden="true"></span>Первый шаг — короткий разговор в Telegram. Без оплаты.';
+  note.innerHTML = '<span aria-hidden="true"></span>Фиксация места и реквизиты для оплаты — в Telegram.';
   action?.after(note);
   return true;
 };
