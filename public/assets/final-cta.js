@@ -1,9 +1,4 @@
-const finalRoute = [
-  ["01", "Старт"],
-  ["02", "Практика"],
-  ["03", "Собеседования"],
-  ["04", "Оффер"],
-];
+const directSteps = ["План", "Практика", "Собеседования"];
 
 const enhanceFinalCta = () => {
   const link = document.querySelector('a[data-track="cta_click:band"]');
@@ -17,51 +12,63 @@ const enhanceFinalCta = () => {
   }
 
   section.dataset.finalCta = "true";
-  section.classList.add("final-cta-section");
-  panel.classList.add("final-cta-panel");
-  copy.classList.add("final-cta-copy");
-  title.classList.add("final-cta-title");
-  subtitle.classList.add("final-cta-subtitle");
+  section.classList.add("final-cta-section", "final-journey-section");
+  panel.classList.add("final-cta-panel", "final-journey-panel");
+  copy.classList.add("final-cta-copy", "final-journey-copy");
+  title.classList.add("final-cta-title", "final-journey-title");
+  subtitle.classList.add("final-cta-subtitle", "final-journey-subtitle");
 
   const eyebrow = document.createElement("div");
-  eyebrow.className = "final-cta-eyebrow";
-  eyebrow.innerHTML = '<span>Финальный шаг</span><small>08 / OFFER</small>';
+  eyebrow.className = "final-cta-eyebrow final-journey-eyebrow";
+  eyebrow.innerHTML = '<span>Финальный шаг</span><small>ROUTE / 02</small>';
   title.before(eyebrow);
 
+  const journey = document.createElement("div");
+  journey.className = "final-journey";
+  journey.innerHTML = `
+    <div class="final-journey-head" aria-hidden="true">
+      <span>Точка выбора</span><span>Маршрут</span><span>Результат</span>
+    </div>
+    <div class="final-journey-map">
+      <div class="final-journey-start">
+        <span>Ты здесь</span>
+        <strong>Первый шаг</strong>
+        <small>00 / START</small>
+      </div>
+      <section class="final-direct-path" aria-label="Личный маршрут с Вадимом до оффера">
+        <header><span>С Вадимом</span><small>до 2 месяцев</small></header>
+        <div class="final-direct-track">
+          <i class="final-direct-signal" aria-hidden="true"></i>
+          ${directSteps.map((step, index) => `<div class="final-direct-step"><span>0${index + 1}</span><strong>${step}</strong></div>`).join("")}
+          <div class="final-direct-step is-offer"><span>04</span><strong>Оффер</strong><b>₽</b></div>
+        </div>
+      </section>
+      <section class="final-maze-path" aria-label="Самостоятельный маршрут с неопределённым сроком и тупиками">
+        <header><span>Самостоятельно</span><small>срок неизвестен</small></header>
+        <div class="final-maze-canvas">
+          <svg viewBox="0 0 820 150" preserveAspectRatio="none" aria-hidden="true">
+            <path class="maze-main" d="M0 74H95V30H205V108H315V52H438V116H550V38H655V76H810" />
+            <path d="M95 74v58h92" /><path d="M205 30V8h88" /><path d="M315 108v30h88" />
+            <path d="M438 52V16h84" /><path d="M550 116v22h83" /><path d="M655 76v48h78" />
+            <path class="maze-dead" d="m181 126 12 12m0-12-12 12M287 2l12 12m0-12-12 12M397 132l12 12m0-12-12 12M516 10l12 12m0-12-12 12M627 132l12 12m0-12-12 12M727 118l12 12m0-12-12 12" />
+          </svg>
+          <span class="maze-label label-course">Курсы</span>
+          <span class="maze-label label-youtube">YouTube</span>
+          <span class="maze-label label-what">Что учить?</span>
+          <span class="maze-label label-pause">Пауза</span>
+          <span class="maze-label label-again">Ещё курс</span>
+          <span class="maze-label label-offer">Оффер?</span>
+        </div>
+      </section>
+    </div>`;
+  subtitle.after(journey);
+
   const action = link.parentElement;
-  action?.classList.add("final-cta-action");
+  action?.classList.add("final-cta-action", "final-journey-action");
   const note = document.createElement("p");
-  note.className = "final-cta-note";
-  note.innerHTML = '<span aria-hidden="true"></span>Откроется Telegram. Без оплаты — сначала поймём, подходим ли мы друг другу.';
+  note.className = "final-cta-note final-journey-note";
+  note.innerHTML = '<span aria-hidden="true"></span>Первый шаг — короткий разговор в Telegram. Без оплаты.';
   action?.after(note);
-
-  const dossier = document.createElement("aside");
-  dossier.className = "final-cta-dossier";
-  dossier.setAttribute("aria-label", "Параметры индивидуального сопровождения");
-  dossier.innerHTML = `
-    <div class="final-dossier-head">
-      <div><span class="final-status-light" aria-hidden="true"></span><strong>Personal track</strong></div>
-      <small>01 / ACTIVE</small>
-    </div>
-    <dl class="final-dossier-data">
-      <div><dt>Формат</dt><dd>Индивидуально</dd></div>
-      <div><dt>Цель</dt><dd>Оффер в DevOps</dd></div>
-      <div><dt>Срок</dt><dd>До 2 месяцев</dd></div>
-      <div><dt>Доступно</dt><dd class="final-places">3 места</dd></div>
-    </dl>
-    <div class="final-route" aria-label="Маршрут: старт, практика, собеседования, оффер">
-      <div class="final-route-line" aria-hidden="true"><span></span></div>
-      ${finalRoute.map(([index, label]) => `
-        <div class="final-route-step${index === "04" ? " is-result" : ""}">
-          <span>${index}</span><strong>${label}</strong>
-        </div>`).join("")}
-    </div>
-    <div class="final-dossier-status"><span>Набор открыт</span><small>Сопровождение до испытательного срока</small></div>`;
-
-  const layout = document.createElement("div");
-  layout.className = "final-cta-layout";
-  copy.before(layout);
-  layout.append(copy, dossier);
   return true;
 };
 
