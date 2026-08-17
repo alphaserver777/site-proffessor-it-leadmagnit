@@ -92,6 +92,150 @@
   --glass-border: rgba(109, 169, 211, .13);
 }
 
+/* A continuous infrastructure atmosphere replaces the literal square grid. */
+.fx-grid {
+  display: none !important;
+}
+
+main {
+  position: relative;
+  isolation: isolate;
+}
+
+main > #top,
+main > #joboffers {
+  position: relative;
+  z-index: 1;
+}
+
+.infra-atmosphere {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+}
+
+.infra-atmosphere::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 42% 31% at 8% 22%, color-mix(in srgb, var(--blue) 10%, transparent), transparent 72%),
+    radial-gradient(ellipse 38% 29% at 93% 48%, color-mix(in srgb, var(--green) 8%, transparent), transparent 74%),
+    radial-gradient(ellipse 35% 18% at 50% 65%, color-mix(in srgb, var(--blue) 4%, transparent), transparent 76%);
+}
+
+.infra-streams {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 82%, transparent 98%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 82%, transparent 98%);
+}
+
+.infra-streams span {
+  position: absolute;
+  left: var(--stream-x);
+  top: -22rem;
+  color: color-mix(in srgb, var(--blue) 74%, var(--green));
+  font: 650 .54rem/1.85 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .09em;
+  white-space: pre;
+  opacity: calc(var(--stream-alpha) * .34);
+  text-shadow: 0 0 11px color-mix(in srgb, var(--blue) 38%, transparent);
+  animation: infra-stream-fall var(--stream-duration) linear var(--stream-delay) infinite;
+  will-change: transform;
+}
+
+.infra-contours {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: color-mix(in srgb, var(--blue) 23%, transparent);
+  stroke-width: .8;
+  vector-effect: non-scaling-stroke;
+}
+
+.infra-contour {
+  opacity: .52;
+}
+
+.infra-contour path {
+  stroke-dasharray: 5 10 90 18;
+  animation: infra-contour-flow 34s linear infinite;
+}
+
+.infra-contour path:nth-child(2) { opacity: .65; animation-duration: 41s; }
+.infra-contour path:nth-child(3) { opacity: .4; animation-duration: 48s; }
+
+.infra-signal-path {
+  stroke: color-mix(in srgb, var(--green) 28%, transparent);
+  stroke-width: 1;
+  stroke-dasharray: 1 18 120 32;
+  opacity: .4;
+  animation: infra-contour-flow 28s linear reverse infinite;
+}
+
+.infra-horizon {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 51%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--blue) 20%, transparent) 24%, transparent 48%, color-mix(in srgb, var(--green) 18%, transparent) 76%, transparent);
+  opacity: .45;
+  filter: blur(.15px);
+}
+
+@keyframes infra-stream-fall {
+  from { transform: translate3d(0, -10%, 0); }
+  to { transform: translate3d(0, 175vh, 0); }
+}
+
+@keyframes infra-contour-flow {
+  to { stroke-dashoffset: -260; }
+}
+
+@media (max-width: 700px) {
+  .infra-streams span:nth-child(2n),
+  .infra-streams span:nth-child(6),
+  .infra-streams span:nth-child(7) {
+    display: none;
+  }
+
+  .infra-streams span {
+    opacity: calc(var(--stream-alpha) * .26);
+    font-size: .48rem;
+  }
+
+  .infra-contours {
+    width: 150%;
+    left: -25%;
+    opacity: .72;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infra-streams span {
+    top: var(--stream-rest);
+    animation: none;
+  }
+
+  .infra-contour path,
+  .infra-signal-path {
+    animation: none;
+  }
+}
+
 /* Temporarily remove the materials showcase and every navigation entry to it. */
 #library,
 a[href="#library"] {
