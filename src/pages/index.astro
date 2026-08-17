@@ -1,146 +1,49 @@
 ---
-import Base from "../layouts/Base.astro";
-import "../styles/site.css";
-
-const SOURCE = "https://site.criminalit.ru";
-const response = await fetch(`${SOURCE}/api/site`);
-if (!response.ok) throw new Error(`Criminal IT source returned ${response.status}`);
-
-type Item = Record<string, any>;
-type SourceData = { settings: Item; sections: Item[]; lessons: Item[] };
-const raw = (await response.json()) as SourceData;
-const nameForms: Array<[RegExp, string]> = [
-  [/Кириллом/g, "Вадимом"], [/Кириллу/g, "Вадиму"], [/Кирилла/g, "Вадима"],
-  [/Кирилле/g, "Вадиме"], [/Кирилл/g, "Вадим"], [/кириллом/g, "вадимом"],
-  [/кириллу/g, "вадиму"], [/кирилла/g, "вадима"], [/кирилле/g, "вадиме"], [/кирилл/g, "вадим"],
-];
-const adaptText = (value: unknown) => {
-  let text = String(value ?? "");
-  nameForms.forEach(([pattern, replacement]) => (text = text.replace(pattern, replacement)));
-  return text.replaceAll("Criminal IT", "Профессор IT");
-};
-const asset = (value: string) => value?.startsWith("/") ? `${SOURCE}${value}` : value;
-const s = raw.settings;
-const ui = s.ui || {};
-const ctaLink = "https://t.me/proffessor_it";
-const title = "Профессор IT — с нуля до оффера в DevOps";
-const description = adaptText(s.heroSubtitle).replace(/\s+/g, " ").trim();
-const lessonsBySection: Array<Item & { lessons: Item[] }> = raw.sections.sort((a, b) => a.order - b.order).map((section) => ({
-  ...section,
-  lessons: raw.lessons.filter((lesson) => lesson.sectionId === section.id).sort((a, b) => a.order - b.order),
-}));
-const iconFor = (name: string) => name === "refund" ? "↩" : name === "shield" ? "◇" : "✦";
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    { "@type": "Person", name: "Вадим Моисеенко", jobTitle: "DevOps / SRE наставник" },
-    { "@type": "Service", name: "DevOps-наставничество под ключ", provider: { "@type": "Person", name: "Вадим Моисеенко" } },
-    { "@type": "FAQPage", mainEntity: s.faq.map((item: Item) => ({ "@type": "Question", name: adaptText(item.q), acceptedAnswer: { "@type": "Answer", text: adaptText(item.a) } })) },
-  ],
-};
+const title = "Профессор IT — менторство в IT";
+const description = "Профессор IT — личное менторство в IT: путь в DevOps/SRE с нуля до оффера, видео-материалы прямо на сайте.";
+const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
-<Base {title} {description}>
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  <div class="sales-page" id="top">
-    <div class="page-progress"><span data-progress></span></div>
-    <header class="sales-header">
-      <a class="brand" href="#top"><span class="brand-mark">P</span><span>ПРОФЕССОР IT<small>DEVOPS / SRE MENTORSHIP</small></span></a>
-      <nav aria-label="Основная навигация">
-        <a href="#results">{adaptText(ui.navJobOffers)}</a><a href="#library">{adaptText(ui.navLibrary)}</a>
-        <a href="#roadmap">{adaptText(ui.navRoadmap)}</a><a href="#about">{adaptText(ui.navAbout)}</a>
-        <a href="#guarantees">{adaptText(ui.navGuarantees)}</a><a href="#plans">{adaptText(ui.navPlans)}</a>
-        <a href="#reviews">{adaptText(ui.navReviews)}</a><a href="#faq">{adaptText(ui.navFaq)}</a>
-      </nav>
-      <a class="button button-compact" href={ctaLink} target="_blank" rel="noreferrer" data-cta>{adaptText(s.ctaText)}</a>
-    </header>
-
-    <main>
-      <section class="hero shell">
-        <div class="hero-grid" aria-hidden="true"></div>
-        <div class="hero-copy">
-          <div class="badges">{s.badges.map((badge: Item) => <span class={`badge badge-${badge.color}`}><i>{badge.icon === "fire" ? "◆" : badge.icon === "ruble" ? "₽" : "✦"}</i>{adaptText(badge.text)}</span>)}</div>
-          <h1>{adaptText(s.heroTitle)}</h1><p>{adaptText(s.heroSubtitle)}</p>
-          <div class="hero-actions"><a class="button button-primary button-large" href={ctaLink} target="_blank" rel="noreferrer" data-cta>{adaptText(s.ctaText)} <span>↗</span></a><a class="text-link" href="#library">{adaptText(ui.heroSecondary)} <span>↓</span></a></div>
-          <div class="stats">{s.stats.map((stat: Item) => <span><b>{adaptText(stat.value)}</b><small>{adaptText(stat.label)}</small></span>)}</div>
-        </div>
-      </section>
-
-      <section class="section section-dark reveal" id="about"><div class="shell">
-        <div class="section-code">01 / {adaptText(ui.aboutEyebrow || "ОБ ОБУЧЕНИИ")}</div>
-        <div class="section-heading split"><h2>{adaptText(ui.aboutTitle)}</h2><p class="lead">{adaptText(s.about)}</p></div>
-        <div class="skills-head"><span>{adaptText(ui.aboutSkillsLabel)}</span><b>{s.skills.length} ЭЛЕМЕНТОВ СИСТЕМЫ</b></div>
-        <div class="skills-cloud">{s.skills.map((skill: string, index: number) => <span><i>{String(index + 1).padStart(2, "0")}</i>{adaptText(skill)}</span>)}</div>
-      </div></section>
-
-      <section class="section shell reveal" id="guarantees">
-        <div class="section-code">02 / ГАРАНТИИ</div><div class="section-heading"><h2>{adaptText(ui.guaranteesTitle)}</h2><p>{adaptText(ui.guaranteesSubtitle)}</p></div>
-        <div class="guarantees-grid">{s.guarantees.map((item: Item, index: number) => <article><div class="guarantee-icon">{iconFor(item.icon)}</div><small>ГАРАНТИЯ / {String(index + 1).padStart(2, "0")}</small><h3>{adaptText(item.title)}</h3><p>{adaptText(item.text)}</p></article>)}</div>
-      </section>
-
-      <section class="section roadmap-section reveal" id="roadmap"><div class="shell">
-        <div class="section-code">03 / {adaptText(ui.navRoadmap)}</div><div class="section-heading split"><h2>{adaptText(ui.roadmapTitle)}</h2><p>{adaptText(ui.roadmapSubtitle)}</p></div>
-        <ol class="roadmap">{s.roadmap.map((item: Item, index: number) => <li><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{adaptText(item.title)}</h3><p>{adaptText(item.text)}</p></div><i>↗</i></li>)}</ol>
-      </div></section>
-
-      <section class="section shell reveal" id="library">
-        <div class="section-code">04 / {adaptText(ui.libraryEyebrow)}</div><div class="section-heading split"><h2>{adaptText(ui.libraryTitle)}</h2><p>{adaptText(ui.librarySubtitle).replace("{count}", String(raw.lessons.length))}</p></div>
-        <div class="library-sections">{lessonsBySection.map((section) => <section class="library-group">
-          <div class="library-group-head"><div><span>VIDEO ARCHIVE</span><h3>{adaptText(section.title)}</h3><p>{adaptText(section.description)}</p></div><b>{String(section.lessons.length).padStart(2, "0")}</b></div>
-          <div class="video-grid">{section.lessons.map((lesson: Item, index: number) => <article class="video-card"><div class="video-frame"><video controls preload="none" src={asset(lesson.videoUrl)}></video><span class="video-number">{String(index + 1).padStart(2, "0")}</span>{lesson.duration && <small>{adaptText(lesson.duration)}</small>}</div><h4>{adaptText(lesson.title)}</h4>{lesson.description && <p>{adaptText(lesson.description)}</p>}</article>)}</div>
-        </section>)}</div>
-      </section>
-
-      <section class="section payment-section reveal"><div class="shell payment-layout">
-        <div><div class="section-code">05 / ОПЛАТА</div><div class="section-heading"><h2>Удобный способ оплаты</h2><p>Выберите подходящий формат после обсуждения условий.</p></div></div>
-        <div class="payment-methods">{s.paymentMethods.map((item: Item) => <article>{item.image && <img src={asset(item.image)} alt="" loading="lazy" />}<strong>{adaptText(item.label)}</strong></article>)}</div>
-      </div></section>
-
-      <section class="section shell reveal" id="plans">
-        <div class="section-code">06 / {adaptText(ui.plansEyebrow)}</div><div class="section-heading split"><h2>{adaptText(ui.plansTitle)}</h2><p>{adaptText(ui.plansSubtitle)}</p></div>
-        <div class="plans-grid">{s.plans.map((plan: Item, index: number) => <article class:list={["plan-card", { featured: plan.highlighted }]}>
-          {plan.highlighted && <span class="popular">{adaptText(ui.plansPopular)}</span>}<div class="plan-top"><small>ТАРИФ / {String(index + 1).padStart(2, "0")}</small><h3>{adaptText(plan.name)}</h3><strong>{adaptText(plan.price)}</strong><p>{adaptText(plan.period)}</p></div>
-          <ul>{plan.features.map((feature: string) => <li>{adaptText(feature)}</li>)}</ul><a class:list={["button", { "button-primary": plan.highlighted }]} href={ctaLink} target="_blank" rel="noreferrer" data-cta>{adaptText(plan.cta)} <span>↗</span></a>
-        </article>)}</div>
-      </section>
-
-      <section class="section reviews-section reveal" id="reviews"><div class="shell">
-        <div class="section-code">07 / {adaptText(ui.reviewsEyebrow)}</div><div class="section-heading split"><h2>{adaptText(ui.reviewsTitle)}</h2><p>{adaptText(ui.reviewsFootnote)}</p></div>
-        <div class="reviews-grid">{s.reviews.map((review: Item, index: number) => <article class="review-card">
-          <div class="review-head"><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{adaptText(review.name)}</h3><small>{adaptText(review.role)}</small></div></div>{review.offerSummary && <strong class="offer-summary">{adaptText(review.offerSummary)}</strong>}
-          <details><summary>{adaptText(ui.reviewsReadMore)} <i>+</i></summary><p>{adaptText(review.text)}</p></details><div class="review-foot">{review.finalOffer && <b>{adaptText(review.finalOffer)}</b>}{review.link?.startsWith("http") && <a href={review.link.trim()} target="_blank" rel="noreferrer">{adaptText(ui.reviewsWriteStudent)} ↗</a>}</div>
-        </article>)}</div>
-      </div></section>
-
-      <section class="section shell reveal" id="results">
-        <div class="section-code">08 / {adaptText(ui.jobOffersEyebrow)}</div><div class="section-heading split"><h2>{adaptText(ui.jobOffersTitle)}</h2><p>{adaptText(ui.jobOffersSubtitle)}</p></div>
-        <div class="offers-grid">{s.jobOffers.map((offer: Item, index: number) => <article class="result-card"><a href={asset(offer.image)} target="_blank" rel="noreferrer"><img src={asset(offer.image)} alt={`Оффер ${adaptText(offer.company || offer.amount)}`} loading="lazy" /></a><div><small>RESULT / {String(index + 1).padStart(2, "0")}</small><strong>{adaptText(offer.amount)}</strong><h3>{adaptText(offer.company)}</h3><span>{adaptText(offer.role)}</span><p>{adaptText(offer.note)}</p></div></article>)}</div>
-      </section>
-
-      <section class="section documents-section reveal" id="documents"><div class="shell documents-layout">
-        <div class="section-heading"><div class="section-code">09 / {adaptText(ui.navDocuments)}</div><h2>{adaptText(ui.documentsTitle)}</h2><p>{adaptText(ui.documentsSubtitle)}</p></div>
-        <div class="documents-list">{s.documents.map((doc: Item, index: number) => <a href={doc.url} target="_blank" rel="noreferrer"><span>DOC / {String(index + 1).padStart(2, "0")}</span><strong>{adaptText(doc.label)}</strong><i>↗</i></a>)}</div>
-      </div></section>
-
-      <section class="section shell reveal" id="faq"><div class="section-code">10 / {adaptText(ui.faqEyebrow)}</div><div class="faq-layout">
-        <div class="section-heading"><h2>{adaptText(ui.faqTitle)}</h2><p>{s.faq.length} ответ на вопросы перед стартом.</p></div>
-        <div class="faq-list">{s.faq.map((item: Item, index: number) => <details><summary><span>{String(index + 1).padStart(2, "0")}</span>{adaptText(item.q)}<i>+</i></summary><p>{adaptText(item.a)}</p></details>)}</div>
-      </div></section>
-
-      <section class="final-cta reveal"><div class="final-grid"></div><div class="shell"><span class="hero-kicker">СЛЕДУЮЩИЙ ШАГ</span><h2>{adaptText(ui.ctaTitle)}</h2><p>{adaptText(ui.ctaSubtitle)}</p><a class="button button-primary button-large" href={ctaLink} target="_blank" rel="noreferrer" data-cta>{adaptText(s.ctaText)} <span>↗</span></a></div></section>
-    </main>
-    <footer class="sales-footer shell"><a class="brand" href="#top"><span class="brand-mark">P</span><span>ПРОФЕССОР IT<small>DEVOPS / SRE MENTORSHIP</small></span></a><p>© 2026 · Профессор IT</p><a href="https://t.me/proffessor_it" target="_blank" rel="noreferrer">Telegram ↗</a></footer>
-  </div>
-
-  <script>
-    const progress = document.querySelector<HTMLElement>("[data-progress]");
-    const updateProgress = () => { const height = document.documentElement.scrollHeight - innerHeight; if (progress) progress.style.transform = `scaleX(${height > 0 ? scrollY / height : 0})`; };
-    addEventListener("scroll", updateProgress, { passive: true }); updateProgress();
-    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => { if (!entry.isIntersecting) return; entry.target.classList.add("visible"); observer.unobserve(entry.target); }), { threshold: 0.04, rootMargin: "0px 0px -5%" });
-    document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
-    document.querySelectorAll<HTMLAnchorElement>("[data-cta]").forEach((link) => link.addEventListener("click", () => {
-      const eventId = crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`; const visitorId = localStorage.getItem("professorit_visitor_id") || eventId; localStorage.setItem("professorit_visitor_id", visitorId);
-      fetch("/api/public/events", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ event_id: eventId, event_type: "mentorship_cta_clicked", visitor_id: visitorId, path: location.pathname, meta: { href: link.href } }), keepalive: true }).catch(() => {});
-    }));
-  </script>
-</Base>
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/mentorship/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/mentorship/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Профессор IT" />
+    <meta property="og:title" content="Профессор IT — с нуля до оффера в DevOps" />
+    <meta property="og:description" content="Личное менторство: спринты, живая практика в своей коробке, разборы с бадди и выход на оффер." />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content="https://professorit.ru/mentorship/logo.jpg" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Профессор IT — с нуля до оффера в DevOps" />
+    <meta name="twitter:description" content="Личное менторство: спринты, живая практика в своей коробке, разборы с бадди и выход на оффер." />
+    <meta name="twitter:image" content="https://professorit.ru/mentorship/logo.jpg" />
+    <style is:inline>
+      @media (min-width: 1024px) {
+        header nav > div:nth-child(2) > a {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+      }
+    </style>
+    <script is:inline>
+      (() => {
+        let preference = "system";
+        try { preference = localStorage.getItem("ment_theme") || "system"; } catch { preference = "system"; }
+        const dark = preference === "dark" || (preference === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+        document.documentElement.dataset.themePreference = preference;
+      })();
+    </script>
+    <script is:inline type="module" crossorigin="anonymous" src="/mentorship/assets/reference-app.js"></script>
+    <link rel="stylesheet" crossorigin="anonymous" href="/mentorship/assets/reference.css" />
+  </head>
+  <body><div id="root"></div></body>
+</html>
