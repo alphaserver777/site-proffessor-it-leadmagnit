@@ -128,7 +128,7 @@ data.settings.reviews = (data.settings.reviews || []).map((review) => ({
   link: "",
 }));
 data.settings.ui.reviewsWriteStudent = "";
-data.settings.ui.reviewsFootnote = "Все отзывы оставлены реальными учениками. Я ничего не редактирую.";
+data.settings.ui.reviewsFootnote = "";
 await writeFile(join(apiDir, "site.json"), JSON.stringify(data));
 
 console.log(`Mirrored ${importedChunks.length + cssAssets.length + 5} assets and source revision ${data.rev}`);
