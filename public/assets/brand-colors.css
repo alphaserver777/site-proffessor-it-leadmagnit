@@ -385,21 +385,6 @@ a[href="#library"] {
   z-index: 2;
 }
 
-#roadmap .roadmap-money-step .roadmap-card::after {
-  content: "₽";
-  position: absolute;
-  right: 1.25rem;
-  top: 50%;
-  color: color-mix(in srgb, var(--green) 45%, transparent);
-  font: 800 2.2rem/1 ui-monospace, monospace;
-  transform: translateY(-50%);
-  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--green) 40%, transparent));
-}
-
-#roadmap .roadmap-money-step.is-active .roadmap-card::after {
-  color: var(--green);
-}
-
 #roadmap .roadmap-money-layer {
   position: absolute;
   z-index: 1;
