@@ -114,6 +114,21 @@ data.settings.faq = (data.settings.faq || []).map((item) => (
     ? { ...item, a: faqAnswers.get(item.q) }
     : item
 ));
+
+data.settings.paymentMethods = [
+  ...(data.settings.paymentMethods || []).filter((method) => !/рассроч|т[‑-]?банк/i.test(method.label)),
+  {
+    label: "Рассрочка от 5к в месяц",
+    image: "",
+  },
+];
+
+data.settings.reviews = (data.settings.reviews || []).map((review) => ({
+  ...review,
+  link: "",
+}));
+data.settings.ui.reviewsWriteStudent = "";
+data.settings.ui.reviewsFootnote = "Все отзывы оставлены реальными учениками. Я ничего не редактирую.";
 await writeFile(join(apiDir, "site.json"), JSON.stringify(data));
 
 console.log(`Mirrored ${importedChunks.length + cssAssets.length + 5} assets and source revision ${data.rev}`);
