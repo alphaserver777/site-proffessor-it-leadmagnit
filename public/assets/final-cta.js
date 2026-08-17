@@ -65,7 +65,18 @@ const enhanceFinalCta = () => {
     </section>
 
     <div class="final-choice-pivot">
-      <span></span><strong>Твой выбор</strong><small>${paragraphs[1] || "Есть другой путь."}</small><span></span>
+      <svg class="final-choice-fork" viewBox="0 0 1000 400" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="final-choice-fork-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#8f9bad" stop-opacity=".25" />
+            <stop offset=".48" stop-color="#55d9ff" stop-opacity=".48" />
+            <stop offset="1" stop-color="#62efbb" stop-opacity=".72" />
+          </linearGradient>
+        </defs>
+        <path class="final-choice-fork-path" d="M500 200H105M105 28V372M105 28H255M105 372H255" />
+        <path class="final-choice-fork-arrow" d="m245 20 12 8-12 8M245 364l12 8-12 8" />
+      </svg>
+      <strong>Твой выбор</strong><small>${paragraphs[1] || "Есть другой путь."}</small>
     </div>
 
     <section class="final-choice-guided" aria-label="Маршрут со мной до оффера">
