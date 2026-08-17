@@ -91,3 +91,16 @@
   --glass: rgba(10, 16, 25, .76);
   --glass-border: rgba(109, 169, 211, .13);
 }
+
+/* Temporarily remove the materials showcase and every navigation entry to it. */
+#library,
+a[href="#library"] {
+  display: none !important;
+}
+
+/* A single current tariff should retain the visual weight of the former pair. */
+#plans > .mt-12.grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+  max-width: 42rem;
+  margin-inline: auto;
+}
