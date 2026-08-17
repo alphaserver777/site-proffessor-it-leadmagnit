@@ -818,3 +818,463 @@ a[href="#library"] {
     transition: none !important;
   }
 }
+
+/* FAQ knowledge base: filters and search wrap the original React accordion. */
+#faq.faq-knowledge-section {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+
+#faq.faq-knowledge-section::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 8rem 0 0;
+  background:
+    linear-gradient(90deg, transparent 49.95%, color-mix(in srgb, var(--blue) 5%, transparent) 50%, transparent 50.05%),
+    linear-gradient(transparent 49.95%, color-mix(in srgb, var(--blue) 4%, transparent) 50%, transparent 50.05%),
+    radial-gradient(circle at 76% 22%, color-mix(in srgb, var(--blue) 8%, transparent), transparent 25rem),
+    radial-gradient(circle at 24% 72%, color-mix(in srgb, var(--green) 5%, transparent), transparent 23rem);
+  background-size: 3rem 3rem, 3rem 3rem, auto, auto;
+  mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  pointer-events: none;
+}
+
+#faq .faq-knowledge-host {
+  width: 100%;
+  max-width: 72rem !important;
+  margin-top: 3rem;
+}
+
+#faq .faq-knowledge-layout {
+  display: grid;
+  grid-template-columns: 16.5rem minmax(0, 1fr);
+  align-items: start;
+  gap: 1.5rem;
+}
+
+#faq .faq-navigation {
+  position: sticky;
+  top: 6.5rem;
+  padding: .75rem;
+  border-color: color-mix(in srgb, var(--blue) 21%, var(--line));
+  border-radius: 1.15rem;
+  background: color-mix(in srgb, var(--surface-solid) 88%, transparent);
+  box-shadow: 0 24px 65px color-mix(in srgb, var(--blue) 7%, transparent), var(--card-shadow);
+  backdrop-filter: blur(18px);
+}
+
+#faq .faq-navigation-heading {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  min-height: 2.8rem;
+  padding: 0 .55rem .65rem;
+  gap: .55rem;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+#faq .faq-navigation-heading small {
+  color: var(--blue);
+  font: 700 .61rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .1em;
+}
+
+#faq .faq-system-light {
+  width: .48rem;
+  height: .48rem;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--green) 62%, transparent);
+}
+
+#faq .faq-filter-list {
+  display: grid;
+  gap: .32rem;
+  padding-top: .65rem;
+}
+
+#faq .faq-filter-button {
+  display: grid;
+  grid-template-columns: 1.45rem 1fr auto;
+  align-items: center;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: .5rem .55rem;
+  gap: .55rem;
+  color: var(--muted);
+  border: 1px solid transparent;
+  border-radius: .78rem;
+  background: transparent;
+  font-size: .72rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: color .22s ease, border-color .22s ease, background .22s ease, transform .22s ease;
+}
+
+#faq .faq-filter-button:hover {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--blue) 20%, var(--line));
+  background: color-mix(in srgb, var(--blue) 5%, var(--surface-soft));
+  transform: translateX(.15rem);
+}
+
+#faq .faq-filter-button[aria-pressed="true"] {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--blue) 35%, var(--line));
+  background: linear-gradient(110deg, color-mix(in srgb, var(--blue) 12%, var(--surface-soft)), color-mix(in srgb, var(--green) 7%, var(--surface-soft)));
+  box-shadow: inset 2px 0 0 var(--blue), 0 10px 24px color-mix(in srgb, var(--blue) 7%, transparent);
+}
+
+#faq .faq-filter-index {
+  color: var(--blue);
+  font: 700 .61rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .08em;
+}
+
+#faq .faq-filter-button small {
+  display: grid;
+  place-items: center;
+  min-width: 1.65rem;
+  height: 1.45rem;
+  padding-inline: .3rem;
+  color: inherit;
+  border-radius: .48rem;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  font: 700 .62rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+#faq .faq-main {
+  min-width: 0;
+}
+
+#faq .faq-toolbar {
+  margin-bottom: .8rem;
+  padding: .2rem;
+}
+
+#faq .faq-search-label {
+  display: block;
+  margin: 0 0 .55rem .15rem;
+  color: var(--muted);
+  font: 700 .65rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+#faq .faq-search-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .8rem;
+}
+
+#faq .faq-search-field {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 3.55rem;
+  padding: 0 .9rem;
+  gap: .7rem;
+  color: var(--blue);
+  border: 1px solid color-mix(in srgb, var(--blue) 24%, var(--line));
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--field) 88%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 5%, transparent), 0 18px 45px color-mix(in srgb, var(--blue) 5%, transparent);
+  transition: border-color .22s ease, box-shadow .22s ease;
+}
+
+#faq .faq-search-field:focus-within {
+  border-color: color-mix(in srgb, var(--blue) 58%, var(--line));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 10%, transparent), 0 18px 45px color-mix(in srgb, var(--blue) 8%, transparent);
+}
+
+#faq .faq-search-field input {
+  min-width: 0;
+  height: 100%;
+  color: var(--ink);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: .84rem;
+}
+
+#faq .faq-search-field input::placeholder {
+  color: color-mix(in srgb, var(--muted) 76%, transparent);
+}
+
+#faq .faq-search-field input::-webkit-search-cancel-button {
+  filter: invert(.65);
+}
+
+#faq .faq-search-field kbd {
+  display: grid;
+  place-items: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  color: var(--muted);
+  border: 1px solid var(--line-strong);
+  border-radius: .45rem;
+  background: var(--surface-soft);
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--line-strong) 65%, transparent);
+  font: 700 .66rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+#faq .faq-result-count {
+  min-width: 5.8rem;
+  color: var(--text-soft);
+  font: 700 .67rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-align: right;
+}
+
+#faq .faq-card-list {
+  display: grid;
+  gap: .6rem;
+}
+
+#faq .faq-card {
+  position: relative;
+  border-color: var(--line);
+  border-radius: 1rem !important;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 4%, transparent);
+  transition: border-color .3s ease, background .3s ease, box-shadow .3s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
+}
+
+#faq .faq-card::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: linear-gradient(var(--blue), var(--green));
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+
+#faq .faq-card:hover {
+  border-color: color-mix(in srgb, var(--blue) 25%, var(--line));
+  transform: translateY(-1px);
+}
+
+#faq .faq-card.is-open {
+  border-color: color-mix(in srgb, var(--blue) 43%, var(--line));
+  background: linear-gradient(120deg, color-mix(in srgb, var(--blue) 7%, var(--surface)), color-mix(in srgb, var(--green) 3%, var(--surface)));
+  box-shadow: 0 20px 55px color-mix(in srgb, var(--blue) 9%, transparent), inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+}
+
+#faq .faq-card.is-open::before {
+  opacity: 1;
+}
+
+#faq .faq-question-button {
+  display: grid !important;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 4.35rem;
+  padding: .85rem 1rem !important;
+  gap: .8rem !important;
+}
+
+#faq .faq-card-index {
+  color: var(--blue);
+  font: 700 .66rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .08em;
+}
+
+#faq .faq-question-copy {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  gap: .65rem;
+  color: var(--ink);
+  font-size: .9rem;
+  line-height: 1.35;
+}
+
+#faq .faq-question-category {
+  flex: 0 0 auto;
+  padding: .25rem .4rem;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: .42rem;
+  background: color-mix(in srgb, var(--surface-soft) 82%, transparent);
+  font: 650 .56rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+#faq .faq-question-button > svg {
+  color: var(--muted);
+  transition: color .25s ease, transform .3s ease;
+}
+
+#faq .faq-card.is-open .faq-question-button > svg {
+  color: var(--green);
+}
+
+#faq .faq-answer p {
+  padding: 0 3.8rem 1.25rem !important;
+  color: var(--text-soft) !important;
+  font-size: .84rem;
+  line-height: 1.75;
+}
+
+#faq .faq-empty {
+  display: grid;
+  place-items: center;
+  min-height: 18rem;
+  padding: 2rem;
+  border: 1px dashed color-mix(in srgb, var(--blue) 34%, var(--line));
+  border-radius: 1rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--blue) 5%, var(--surface)), color-mix(in srgb, var(--green) 4%, var(--surface)));
+  text-align: center;
+}
+
+#faq .faq-empty[hidden] {
+  display: none;
+}
+
+#faq .faq-empty span {
+  color: var(--blue);
+  font: 700 .65rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .12em;
+}
+
+#faq .faq-empty strong {
+  margin-top: -1rem;
+  color: var(--ink);
+  font-size: 1.15rem;
+}
+
+#faq .faq-empty p {
+  max-width: 24rem;
+  margin-top: -1.4rem;
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+#faq .faq-empty button {
+  margin-top: -1.2rem;
+  padding: .65rem .9rem;
+  color: var(--primary-text);
+  border-radius: .7rem;
+  background: var(--accent);
+  font-size: .72rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+#faq .faq-filter-button:focus-visible,
+#faq .faq-question-button:focus-visible,
+#faq .faq-empty button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  #faq .faq-knowledge-layout {
+    grid-template-columns: 1fr;
+  }
+
+  #faq .faq-navigation {
+    position: static;
+  }
+
+  #faq .faq-filter-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #faq .faq-filter-button:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 640px) {
+  #faq .faq-knowledge-host {
+    margin-top: 2.25rem;
+  }
+
+  #faq .faq-knowledge-layout {
+    gap: 1.1rem;
+  }
+
+  #faq .faq-navigation {
+    padding: .65rem;
+  }
+
+  #faq .faq-filter-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #faq .faq-filter-button:first-child {
+    grid-column: 1 / -1;
+  }
+
+  #faq .faq-filter-button {
+    grid-template-columns: 1.25rem minmax(0, 1fr) auto;
+    min-height: 2.6rem;
+    padding-inline: .45rem;
+    gap: .35rem;
+    font-size: .66rem;
+  }
+
+  #faq .faq-search-row {
+    grid-template-columns: 1fr;
+    gap: .55rem;
+  }
+
+  #faq .faq-result-count {
+    padding-right: .15rem;
+    text-align: left;
+  }
+
+  #faq .faq-search-field {
+    min-height: 3.35rem;
+  }
+
+  #faq .faq-search-field kbd {
+    display: none;
+  }
+
+  #faq .faq-question-button {
+    grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+    min-height: 4rem;
+    padding: .75rem .8rem !important;
+    gap: .55rem !important;
+  }
+
+  #faq .faq-question-copy {
+    display: grid;
+    justify-items: start;
+    gap: .4rem;
+    font-size: .82rem;
+  }
+
+  #faq .faq-question-category {
+    font-size: .5rem;
+  }
+
+  #faq .faq-answer p {
+    padding: 0 2.8rem 1rem !important;
+    font-size: .8rem;
+    line-height: 1.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #faq .faq-filter-button,
+  #faq .faq-card,
+  #faq .faq-card::before,
+  #faq .faq-search-field,
+  #faq .faq-question-button > svg {
+    transition: none !important;
+  }
+}
