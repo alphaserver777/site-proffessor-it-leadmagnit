@@ -35,6 +35,14 @@ location ^~ /r/ {
     proxy_read_timeout 30s;
 }
 
+location = /tripwire {
+    try_files /index.html =404;
+}
+
+location = /tripwire/ {
+    try_files /index.html =404;
+}
+
 location ^~ /_assets/ {
     try_files $uri =404;
     expires 1y;
