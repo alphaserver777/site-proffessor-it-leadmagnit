@@ -43,6 +43,17 @@ location = /tripwire/ {
     try_files /index.html =404;
 }
 
+location = /mentorship {
+    return 301 /mentorship/;
+}
+
+location ^~ /mentorship/ {
+    alias /srv/professorit-mentorship/current/;
+    index index.html;
+    try_files $uri $uri/ =404;
+    add_header Cache-Control "no-cache, must-revalidate" always;
+}
+
 location ^~ /_assets/ {
     try_files $uri =404;
     expires 1y;
