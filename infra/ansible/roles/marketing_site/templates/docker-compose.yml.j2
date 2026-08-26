@@ -11,6 +11,7 @@ services:
       # ./current directly would resolve the symlink only at container start
       # and make later atomic release switches invisible to Nginx.
       - {{ project_root }}:{{ project_root }}:ro
+      - /srv/professorit-mentorship:/srv/professorit-mentorship:ro
       - ./config:/etc/nginx/professorit:ro
       - ./config/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./acme:/var/www/acme:ro
