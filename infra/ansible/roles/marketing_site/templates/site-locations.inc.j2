@@ -38,4 +38,5 @@ location ~* \.(?:woff2?|svg|jpg|jpeg|png|webp|avif|ico)$ {
 
 location / {
     try_files $uri $uri/ =404;
+    add_header Cache-Control "no-cache, must-revalidate" always;
 }
