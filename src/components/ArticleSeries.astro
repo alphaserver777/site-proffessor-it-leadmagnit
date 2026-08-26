@@ -1,7 +1,7 @@
 ---
 import "../styles/article-series.css";
 interface Props {part:number; title:string; description:string; previous?:string; next?:string; nextLabel?:string}
-const {part,title,description,previous,next}=Astro.props;
+const {part,title,description,previous,next,nextLabel="Следующая часть"}=Astro.props;
 const parts=["История и метод","Почему не получалось","Как выбрать путь","Система и тест-драйв"];
 const query=Astro.url.search;
 const withQuery=(path?:string)=>path ? `${path}${query}` : undefined;
@@ -15,7 +15,7 @@ const tripwire="/?utm_source=longread_series&utm_medium=content&utm_campaign=how
   {part>1 && <a class="series-back" href={withQuery(previous)}>← Часть {part-1}: {parts[part-2]}</a>}
   <header class="series-title"><div class="series-tags"><span>КАРЬЕРА В IT</span><span>ПРАКТИКА</span><b>ЧАСТЬ {part} ИЗ 4</b></div><h1>{title}</h1><div class="series-meta"><span>◉ Вадим Моисеенко</span><span>▦ 12 августа 2026</span><span>◷ {part===4?"15":"10"} минут</span></div><p>{description}</p></header>
   <article class="series-body"><slot /></article>
-  <section class="series-next"><a href={tripwire}>Записаться на тест-драйв</a></section>
+  <section class="series-next">{next && <strong>{nextLabel}</strong>}<div class="series-next-actions">{next && <a data-longread-next href={withQuery(next)}>Читать часть {part+1} →</a>}<a href={tripwire}>Записаться на тест-драйв</a></div></section>
   <nav class="series-pagination">{previous?<a href={withQuery(previous)}><small>← Предыдущая</small><b>Часть {part-1}: {parts[part-2]}</b></a>:<span></span>}{next?<a href={withQuery(next)}><small>Следующая →</small><b>Часть {part+1}: {parts[part]}</b></a>:<span></span>}</nav>
 </main>
 <footer class="series-footer"><p>© {new Date().getFullYear()} Профессор IT · Персональное инженерное наставничество</p><a href="/privacy/">Политика конфиденциальности</a></footer>
