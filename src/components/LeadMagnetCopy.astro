@@ -10,6 +10,30 @@ const copy = clean.slice(start, end).replace(/^#{0,2}\s*\*\*Часть [1-5]\\\.
 const images: Record<string, string> = Object.fromEntries(Array.from({length:15},(_,i)=>[`image${i+1}`,`/images/lead-magnet/${String(i+1).padStart(2,"0")}.png`]));
 const inline = (text:string) => text.replaceAll("\\_", "_").replaceAll("\\+", "+").replaceAll("\\.", ".").replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");
 const blocks:Array<{type:string;value?:string;items?:string[]}>=[]; const lines=copy.split("\n");
-for(let i=0;i<lines.length;){const line=lines[i].trim();if(!line){i++;continue}if(line==="Тут видео"){blocks.push({type:"video"});i++;continue}const image=line.match(/^!\[\]\[([^\]]+)\]$/);if(image){blocks.push({type:"image",value:images[image[1]]});i++;continue}const heading=line.match(/^(#{1,4})\s+(.+)$/);if(heading){blocks.push({type:`h${Math.min(3,heading[1].length+1)}`,value:inline(heading[2])});i++;continue}if(/^\*\s+/.test(line)||/^\d+\\?\.\s+/.test(line)){const ordered=/^\d+\\?\.\s+/.test(line),items:string[]=[];while(i<lines.length){const item=lines[i].trim(),m=ordered?item.match(/^\d+\\?\.\s+(.+)$/):item.match(/^\*\s+(.+)$/);if(!m)break;items.push(inline(m[1]));i++}blocks.push({type:ordered?"ol":"ul",items});continue}const paragraph=[line];i++;while(i<lines.length&&lines[i].trim()&&lines[i].trim()!=="Тут видео"&&!/^!\[\]\[/.test(lines[i].trim())&&!/^#{1,4}\s+/.test(lines[i].trim())&&!/^\*\s+/.test(lines[i].trim())&&!/^\d+\\?\.\s+/.test(lines[i].trim())){paragraph.push(lines[i].trim());i++}blocks.push({type:"p",value:inline(paragraph.join(" "))})}
+for(let i=0;i<lines.length;){
+  const line=lines[i].trim();
+  if(!line){i++;continue}
+  if(line==="Тут видео"){blocks.push({type:"video"});i++;continue}
+  const image=line.match(/^!\[\]\[([^\]]+)\]$/);
+  if(image){blocks.push({type:"image",value:images[image[1]]});i++;continue}
+  const heading=line.match(/^(#{1,4})\s+(.+)$/);
+  if(heading){blocks.push({type:"h"+Math.min(3,heading[1].length+1),value:inline(heading[2])});i++;continue}
+  if(/^\*\s+/.test(line)||/^\d+\\?\.\s+/.test(line)){
+    const ordered=/^\d+\\?\.\s+/.test(line),items:string[]=[];
+    while(i<lines.length){
+      const item=lines[i].trim(),m=ordered?item.match(/^\d+\\?\.\s+(.+)$/):item.match(/^\*\s+(.+)$/);
+      if(!m)break;
+      i++;
+      const details:string[]=[];
+      while(i<lines.length&&/^\s{2,}\S/.test(lines[i])){details.push(lines[i].trim());i++}
+      const detail=details.length?'<span class="list-detail">'+inline(details.join(" "))+"</span>":"";
+      items.push(inline(m[1])+detail);
+    }
+    blocks.push({type:ordered?"ol":"ul",items});continue
+  }
+  const paragraph=[line];i++;
+  while(i<lines.length&&lines[i].trim()&&lines[i].trim()!=="Тут видео"&&!/^!\[\]\[/.test(lines[i].trim())&&!/^#{1,4}\s+/.test(lines[i].trim())&&!/^\*\s+/.test(lines[i].trim())&&!/^\d+\\?\.\s+/.test(lines[i].trim())){paragraph.push(lines[i].trim());i++}
+  blocks.push({type:"p",value:inline(paragraph.join(" "))})
+}
 ---
 {blocks.map((block) => block.type === "image" ? <figure class="article-image"><img src={block.value} loading="lazy" alt=""/></figure> : block.type === "video" ? <figure class="article-image"><video controls preload="metadata" style="display:block;width:100%;height:auto;border-radius:15px"><source src="/images/lead-magnet/intro-video.mp4" type="video/mp4"/></video></figure> : block.type === "h2" ? <h2 set:html={block.value} /> : block.type === "h3" ? <h3 set:html={block.value} /> : block.type === "ul" ? <ul>{block.items?.map((item) => <li set:html={item} />)}</ul> : block.type === "ol" ? <ol>{block.items?.map((item) => <li set:html={item} />)}</ol> : <p set:html={block.value} />)}
