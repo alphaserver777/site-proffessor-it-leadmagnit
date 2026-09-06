@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
     "check": "astro check",
-    "snapshot": "node scripts/mirror-reference.mjs",
-    "build": "npm run snapshot && astro check && astro build",
+    "build": "npm run check && astro build",
     "preview": "astro preview --host 0.0.0.0"
   },
   "dependencies": {
