@@ -4,8 +4,10 @@
 
 Astro-сайт продукта: продажник тест-драйва, четырёхчастный лонгрид, публичная
 форма и страницы результата Prodamus. Рабочий backend и CRM находятся в
-соседнем репозитории `/home/admsys/Work/lesson_record_bot`; стратегия и
-операционные runbook — в `/home/admsys/Work/Marketing_proffessor_it`.
+соседнем репозитории
+`/home/admsys/work/professor_it/bot_service_appointment`; стратегия и
+операционные инструкции — в
+`/home/admsys/work/professor_it/marketing_professorit`.
 
 ## Локальный запуск
 
@@ -49,14 +51,14 @@ curl -fsS https://professorit.ru/payment/failed/ >/dev/null
 ```
 
 Подробности: `infra/ansible/README.md` и
-`../Marketing_proffessor_it/PLAN/14-production-infrastructure.md`.
+`../marketing_professorit/PLAN/14-production-infrastructure.md`.
 
 ## Аналитика
 
 `src/scripts/article-series.ts` сохраняет first-touch UTM/campaign ID и
 отправляет события глубины, активного чтения, переходов и CTA в
 `POST /api/public/events`. Операционный runbook:
-`../Marketing_proffessor_it/PLAN/26-site-analytics-runbook.md`.
+`../marketing_professorit/PLAN/26-site-analytics-runbook.md`.
 
 ## Правила
 
@@ -66,4 +68,3 @@ curl -fsS https://professorit.ru/payment/failed/ >/dev/null
 - изменения выкладываются только из чистого закоммиченного состояния;
 - после визуального изменения проверить desktop, 390 px, reduced motion и
   отсутствие CLS/невидимого первого экрана.
-
