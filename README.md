@@ -6,7 +6,7 @@
 репозитории и публикуются с домена professorit.ru.
 
 Сайт продаёт личное сопровождение Вадима до оффера и прохождения испытательного
-срока. Основной CTA ведёт в Telegram: `https://t.me/proffessor_it`.
+срока. Все кнопки «Хочу на обучение» ведут к выбору тарифа на этой странице.
 
 ## Текущее состояние и ветки
 
@@ -106,7 +106,7 @@ git diff --check
 В браузере необходимо проверить ширины `1440×900`, `1024×768` и `390×844`:
 
 - отсутствие горизонтального скролла и наложений;
-- шапку, якоря и все Telegram CTA;
+- шапку, якоря и переход всех кнопок «Хочу на обучение» к тарифам;
 - роадмап, фильтры обучения и FAQ;
 - тарифы, гарантии и договоры;
 - анимацию финального маршрута и `prefers-reduced-motion`;
@@ -147,7 +147,7 @@ curl -I https://professorit.ru/mentorship/api/site.json
 
 - Страница: `https://professorit.ru/mentorship/`
 - Snapshot: `https://professorit.ru/mentorship/api/site.json`
-- Telegram CTA: `https://t.me/proffessor_it`
+- CTA выбора обучения: `#plans`
 - MAX: `https://max.ru/u/f9LHodD0cOKSwTkPJdylbGaluZM4miWZqbpMcBD7uTVI8UGfJLvPabOTi08`
 - Базовый URL сборки: переменная `PUBLIC_SITE_URL`
 - Path prefix: `/mentorship` в `astro.config.mjs`
