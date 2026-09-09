@@ -8,6 +8,7 @@ const start = clean.indexOf(marks[part - 1]);
 const end = part === 5 ? clean.length : clean.indexOf(marks[part], start + 1);
 const copy = clean.slice(start, end).replace(/^#{0,2}\s*\*\*Часть [1-5]\\\.\*\*[^\n]*\n?/, "").replace(/\*{0,2}!\[\]\[(image\d+)\]\*{0,2}/g, "\n![][$1]\n").trim();
 const images: Record<string, string> = Object.fromEntries(Array.from({length:15},(_,i)=>[`image${i+1}`,`/images/lead-magnet/${String(i+1).padStart(2,"0")}.png`]));
+images.image13 = "/images/lead-magnet/13-v2.png";
 const inline = (text:string) => text.replaceAll("\\_", "_").replaceAll("\\+", "+").replaceAll("\\.", ".").replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");
 const blocks:Array<{type:string;value?:string;items?:string[]}>=[]; const lines=copy.split("\n");
 for(let i=0;i<lines.length;){
