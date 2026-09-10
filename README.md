@@ -60,6 +60,11 @@ curl -fsS https://professorit.ru/payment/failed/ >/dev/null
 `POST /api/public/events`. Операционный runbook:
 `../marketing_professorit/PLAN/26-site-analytics-runbook.md`.
 
+Непрозрачный `lead_magnet_token`, полученный из персональной ссылки лид-бота,
+сохраняется в браузере и переносится по внутренним страницам до формы. Он нужен
+CRM для доставки оплаченного доступа через исходный бот и не отправляется во
+внешние ссылки или в события аналитики.
+
 ## Правила
 
 - секретов и админских токенов во frontend нет;
