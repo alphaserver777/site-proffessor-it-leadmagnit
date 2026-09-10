@@ -43,12 +43,28 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       })();
     </script>
     <script is:inline type="module" crossorigin="anonymous" src="/mentorship/assets/reference-app.js"></script>
-    <script is:inline type="module" src="/mentorship/assets/ambient.js"></script>
-    <script is:inline type="module" src="/mentorship/assets/roadmap.js"></script>
-    <script is:inline type="module" src="/mentorship/assets/about.js"></script>
-    <script is:inline type="module" src="/mentorship/assets/faq.js"></script>
-    <script is:inline type="module" src="/mentorship/assets/final-cta.js"></script>
-    <script is:inline type="module" src="/mentorship/assets/footer.js"></script>
+    <script is:inline type="module">
+      // These scripts add visual effects and filters after the page is usable.
+      // They must not compete with the first render on a weak device or network.
+      const enhancementAssets = [
+        "/mentorship/assets/ambient.js",
+        "/mentorship/assets/roadmap.js",
+        "/mentorship/assets/about.js",
+        "/mentorship/assets/faq.js",
+        "/mentorship/assets/final-cta.js",
+        "/mentorship/assets/footer.js",
+      ];
+      const loadEnhancements = () => {
+        const load = () => enhancementAssets.forEach((asset) => import(asset));
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(load, { timeout: 2500 });
+        } else {
+          window.setTimeout(load, 800);
+        }
+      };
+      if (document.readyState === "complete") loadEnhancements();
+      else window.addEventListener("load", loadEnhancements, { once: true });
+    </script>
     <link rel="stylesheet" crossorigin="anonymous" href="/mentorship/assets/reference.css" />
     <link rel="stylesheet" href="/mentorship/assets/brand-colors.css" />
   </head>

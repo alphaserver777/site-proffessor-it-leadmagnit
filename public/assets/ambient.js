@@ -30,6 +30,15 @@ const contours = `
   </svg>`;
 
 const enhanceAmbient = () => {
+
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const lowPowerDevice =
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    connection?.saveData ||
+    (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+    (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+  if (lowPowerDevice) return true;
+
   const main = document.querySelector("main");
   const hero = document.querySelector("#top");
   const offers = document.querySelector("#joboffers");
