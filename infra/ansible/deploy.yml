@@ -35,6 +35,7 @@
         src: "{{ playbook_dir }}/../../dist/"
         dest: "{{ release_path }}/"
         archive: true
+        use_ssh_args: true
         delete: true
         rsync_opts:
           - "--chown=root:root"
