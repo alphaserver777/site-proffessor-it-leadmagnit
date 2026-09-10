@@ -13,6 +13,14 @@ const main = document.querySelector<HTMLElement>('[data-longread-part]');
 const part = Number(main?.dataset.longreadPart || 1);
 const partCount = Number(main?.dataset.longreadParts || 4);
 const params = new URLSearchParams(location.search);
+const incomingLeadMagnetToken = params.get('lead_magnet_token') || '';
+const storedLeadMagnetToken = localStorage.getItem('professorit_lead_magnet_token') || '';
+const leadMagnetToken = /^[A-Za-z0-9_-]{12,64}$/.test(incomingLeadMagnetToken)
+  ? incomingLeadMagnetToken
+  : (/^[A-Za-z0-9_-]{12,64}$/.test(storedLeadMagnetToken) ? storedLeadMagnetToken : '');
+if (leadMagnetToken && leadMagnetToken === incomingLeadMagnetToken) {
+  localStorage.setItem('professorit_lead_magnet_token', leadMagnetToken);
+}
 const randomId = () => crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 const visitorId = localStorage.getItem('professorit_visitor_id') || randomId();
 localStorage.setItem('professorit_visitor_id', visitorId);
@@ -86,6 +94,9 @@ document.querySelectorAll<HTMLAnchorElement>('a[href]').forEach(link => {
         const value = params.get(key) || localStorage.getItem(`professorit_${key}`);
         if (value && !url.searchParams.has(key)) url.searchParams.set(key, value);
       });
+      if (leadMagnetToken && !url.searchParams.has('lead_magnet_token')) {
+        url.searchParams.set('lead_magnet_token', leadMagnetToken);
+      }
       link.href = url.toString();
     }
   } catch {/* Ignore non-HTTP links. */}
