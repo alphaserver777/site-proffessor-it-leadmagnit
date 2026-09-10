@@ -16,10 +16,12 @@ if [[ -n "$(git -C "${repo_root}" status --porcelain --untracked-files=normal)" 
 fi
 
 release_id="$(git -C "${repo_root}" rev-parse --short HEAD)-$(date +%Y%m%d%H%M%S)"
+asset_version="$(git -C "${repo_root}" rev-parse --short HEAD)"
 
 docker run --rm \
   --user "$(id -u):$(id -g)" \
   --env npm_config_cache=/tmp/npm-cache \
+  --env ASSET_VERSION="${asset_version}" \
   --volume "${repo_root}:/workspace" \
   --workdir /workspace \
   node:22.20.0-alpine3.22 \

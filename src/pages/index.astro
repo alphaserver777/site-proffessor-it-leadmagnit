@@ -2,6 +2,11 @@
 const title = "Профессор IT — личная работа с Вадимом в DevOps";
 const description = "Профессор IT — личная работа с Вадимом: путь в DevOps/SRE с нуля до оффера за 3 месяца, практика и материалы прямо на сайте.";
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// При выпуске значение равно неизменяемому идентификатору версии исходного кода.
+// Оно позволяет кэшировать статические файлы на год и сразу получать новую версию
+// после выпуска сайта.
+const assetVersion = import.meta.env.ASSET_VERSION || "development";
+const assetUrl = (file: string) => `/mentorship/assets/${file}?v=${encodeURIComponent(assetVersion)}`;
 ---
 
 <!doctype html>
@@ -42,18 +47,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         document.documentElement.dataset.themePreference = preference;
       })();
     </script>
-    <script is:inline type="module" crossorigin="anonymous" src="/mentorship/assets/reference-app.js"></script>
-    <script is:inline type="module">
+    <script is:inline type="module" crossorigin="anonymous" src={assetUrl("reference-app.js")}></script>
+    <script is:inline type="module" define:vars={{ assetVersion }}>
       // These scripts add visual effects and filters after the page is usable.
       // They must not compete with the first render on a weak device or network.
-      const enhancementAssets = [
-        "/mentorship/assets/ambient.js",
-        "/mentorship/assets/roadmap.js",
-        "/mentorship/assets/about.js",
-        "/mentorship/assets/faq.js",
-        "/mentorship/assets/final-cta.js",
-        "/mentorship/assets/footer.js",
-      ];
+      const enhancementAssets = ["ambient.js", "roadmap.js", "about.js", "faq.js", "final-cta.js", "footer.js"]
+        .map((file) => `/mentorship/assets/${file}?v=${encodeURIComponent(assetVersion)}`);
       const loadEnhancements = () => {
         const load = () => enhancementAssets.forEach((asset) => import(asset));
         if ("requestIdleCallback" in window) {
@@ -65,8 +64,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       if (document.readyState === "complete") loadEnhancements();
       else window.addEventListener("load", loadEnhancements, { once: true });
     </script>
-    <link rel="stylesheet" crossorigin="anonymous" href="/mentorship/assets/reference.css" />
-    <link rel="stylesheet" href="/mentorship/assets/brand-colors.css" />
+    <link rel="stylesheet" crossorigin="anonymous" href={assetUrl("reference.css")} />
+    <link rel="stylesheet" href={assetUrl("brand-colors.css")} />
   </head>
   <body><div id="root"></div></body>
 </html>

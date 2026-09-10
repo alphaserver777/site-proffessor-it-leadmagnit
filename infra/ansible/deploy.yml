@@ -40,6 +40,40 @@
         rsync_opts:
           - "--chown=root:root"
 
+    - name: Cache versioned mentorship static files for one year
+      ansible.builtin.blockinfile:
+        path: /srv/professorit/config/site-locations.inc
+        marker: "# {mark} Professor IT mentorship immutable assets"
+        insertbefore: '^location \^~ /mentorship/ \{'
+        block: |
+          location ^~ /mentorship/assets/ {
+              alias /srv/professorit-mentorship/current/assets/;
+              expires 1y;
+              add_header Cache-Control "public, max-age=31536000, immutable" always;
+          }
+      register: mentorship_cache_config
+
+    - name: Check public web server configuration
+      ansible.builtin.command:
+        argv:
+          - docker
+          - exec
+          - professorit-site
+          - nginx
+          - -t
+      changed_when: false
+
+    - name: Reload public web server configuration
+      ansible.builtin.command:
+        argv:
+          - docker
+          - exec
+          - professorit-site
+          - nginx
+          - -s
+          - reload
+      when: mentorship_cache_config.changed
+
     - name: Point current symlink to the new release
       ansible.builtin.file:
         src: "{{ release_path }}"
