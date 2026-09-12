@@ -1,0 +1,20 @@
+{
+  "name": "@professorit/test-drive",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0",
+    "check": "astro check",
+    "build": "npm run check && astro build",
+    "preview": "astro preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@professorit/funnel-shared": "1.0.0",
+    "@astrojs/check": "^0.9.4",
+    "@fontsource/inter": "^5.2.6",
+    "@fontsource/space-grotesk": "^5.2.6",
+    "astro": "^7.2.2",
+    "typescript": "^5.9.2"
+  }
+}

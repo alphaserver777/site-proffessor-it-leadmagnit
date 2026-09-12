@@ -1,0 +1,27 @@
+---
+import Base from '@professorit/funnel-shared/Base.astro';
+---
+<Base title="Проверка оплаты — Профессор IT" description="Подтверждение оплаты тест-драйва IT-профессии">
+  <main class="payment-result shell">
+    <section class="payment-result-card" data-payment-result>
+      <span class="success-mark" data-result-mark>…</span>
+      <p class="kicker">PRODAMUS / ПРОВЕРКА ПЛАТЕЖА</p>
+      <h1 data-result-title>Проверяем оплату</h1>
+      <p data-result-copy>Обычно подтверждение занимает несколько секунд. Не закрывайте страницу.</p>
+      <div class="payment-result-links" hidden data-result-contacts>
+        <strong data-contact-title>Напишите мне, чтобы получить материалы</strong>
+        <p data-contact-copy>Выберите удобный мессенджер и отправьте сообщение «Оплатил тест-драйв». Я проверю заявку и лично выдам задание и необходимые инструменты.</p>
+        <div class="payment-channel-buttons">
+          <a class="button primary large" href="https://t.me/proffessor_it" target="_blank" rel="noreferrer" data-payment-channel="telegram">Получить материалы в Telegram</a>
+          <a class="button large payment-max" href="https://max.ru/u/f9LHodD0cOKSwTkPJdylbGaluZM4miWZqbpMcBD7uTVI8UGfJLvPabOTi08" target="_blank" rel="noreferrer" data-payment-channel="max">Получить материалы в MAX</a>
+        </div>
+      </div>
+      <a class="payment-home-link" href="/" hidden data-result-home>Вернуться на главную</a>
+    </section>
+  </main>
+  <script>
+    const token=new URLSearchParams(location.search).get('enrollment');
+    const title=document.querySelector<HTMLElement>('[data-result-title]')!;const copy=document.querySelector<HTMLElement>('[data-result-copy]')!;const mark=document.querySelector<HTMLElement>('[data-result-mark]')!;const home=document.querySelector<HTMLElement>('[data-result-home]')!;const contacts=document.querySelector<HTMLElement>('[data-result-contacts]')!;
+    let attempts=0;const check=async()=>{if(!token){title.textContent='Не найден номер заявки';copy.textContent='Напишите мне — я проверю платёж вручную.';contacts.hidden=false;return;}try{const response=await fetch(`/api/public/test-drive/${encodeURIComponent(token)}`);const result=await response.json();if(response.ok&&result.status!=='awaiting_payment'){mark.textContent='✓';title.textContent='Оплата подтверждена';copy.textContent='Тест-драйв оформлен. Чтобы получить материалы, напишите мне сейчас в Telegram или MAX.';home.hidden=false;contacts.hidden=false;return;}}catch{}attempts+=1;if(attempts<15)setTimeout(check,2000);else{title.textContent='Платёж обрабатывается';copy.textContent='Подтверждение задержалось. Напишите мне — платёж не потеряется, я проверю его вручную.';contacts.hidden=false;}};check();
+  </script>
+</Base>

@@ -1,0 +1,139 @@
+---
+import Base from "@professorit/funnel-shared/Base.astro";
+import "../../../styles/longread.css";
+
+const title = "Как выбрать IT-профессию и не потерять месяцы — Профессор IT";
+const description = "Как проверить DevOps, информационную безопасность или этичный пентест на практике до покупки большого курса.";
+const productUrl = "/?utm_source=longread&utm_medium=content&utm_campaign=how_to_enter_it&utm_content=final_cta#characters";
+const chapters = [
+  ["problem", "Почему выбор не работает"],
+  ["method", "Новый способ"],
+  ["proof", "Урок или задача"],
+  ["professions", "Три профессии"],
+  ["offer", "Тест-драйв"],
+];
+const professions = [
+  {id:"devops", number:"01", role:"DevOps-инженер", title:"Архитектор", color:"green", text:"Строит воспроизводимую инфраструктуру, автоматизирует операции и ищет причины сбоев.", quest:"Контейнеризировать сервис и запустить его в двух окружениях.", result:"Репозиторий, конфигурация и работающий стенд."},
+  {id:"security", number:"02", role:"Информационная безопасность", title:"Специалист по ИБ", color:"blue", text:"Исследует риски системы, усиливает защиту и обосновывает каждую рекомендацию.", quest:"Провести базовый аудит учебного Linux-сервера.", result:"Карта рисков, чек-лист hardening и краткий отчёт."},
+  {id:"pentest", number:"03", role:"Этичный пентест", title:"Хакер", color:"red", text:"Исследует разрешённый контур, проверяет гипотезы и документирует доказательства.", quest:"Проверить специально подготовленный учебный стенд.", result:"Цепочка проверки, подтверждённая находка и рекомендации."},
+];
+const faq = [
+  ["Я совсем новичок. У меня получится?", "Да. Задание начинается с необходимого фундамента, а сложность учитывает вашу точку старта."],
+  ["Можно понять профессию за три дня?", "Освоить профессию нельзя. Но можно проверить тип работы, своё отношение к задаче и желание развиваться дальше."],
+  ["Что, если я не закончу задачу?", "Незавершённое решение тоже полезно: оно показывает ваш подход, препятствие и следующий шаг."],
+  ["Это записанный курс?", "Нет. Короткие материалы служат опорой. Основа — ваша задача, самостоятельное решение, проверка и личный разбор."],
+  ["Наставничество обязательно?", "Нет. Продолжение обсуждается после практики, только если направление вам подходит и мы оба хотим работать вместе."],
+];
+---
+
+<Base {title} {description}>
+  <div class="reading-progress" aria-hidden="true"><i data-reading-progress></i></div>
+  <header class="lr-header">
+    <a class="lr-brand" href="/" aria-label="Профессор IT"><span>P</span><b>ПРОФЕССОР IT</b></a>
+    <div class="lr-header-meta"><span>ГИД · 12 МИНУТ</span><a data-product-link href={productUrl}>Тест-драйв · 1 000 ₽</a></div>
+  </header>
+
+  <main class="longread" id="top">
+    <section class="lr-hero">
+      <div class="lr-hero-copy">
+        <p class="lr-kicker">ВХОД В IT БЕЗ ПОКУПКИ ПРОФЕССИИ ВСЛЕПУЮ</p>
+        <h1>Как войти в IT <em>и не потерять месяцы</em> на неподходящем пути</h1>
+        <p class="lr-deck">DevOps, информационная безопасность и этичный пентест выглядят перспективно со стороны. Разберём, как проверить профессию на настоящей задаче до покупки большого курса.</p>
+        <a class="lr-primary" href="#problem">Начать читать <span>↓</span></a>
+        <div class="lr-author"><div class="lr-author-mark">P</div><p><b>Вадим Моисеенко</b><span>Кандидат технических наук · 10+ лет практики</span></p></div>
+      </div>
+      <div class="decision-map" aria-label="От хаотичного выбора к профессиональному решению">
+        <div class="map-grid"></div><p class="map-label">КАРТА РЕШЕНИЯ / 01</p>
+        <div class="map-choice"><small>СЕЙЧАС</small><strong>Курсы · ролики<br/>зарплаты · советы</strong></div>
+        <svg viewBox="0 0 620 620" aria-hidden="true"><path d="M105 150 C245 150 185 305 310 305 S410 460 520 460"/><path class="map-live" d="M105 150 C245 150 185 305 310 305 S410 460 520 460"/></svg>
+        <div class="map-core"><small>НОВЫЙ МЕХАНИЗМ</small><strong>Одна настоящая<br/>задача</strong><span>ПРАКТИКА × РАЗБОР</span></div>
+        <div class="map-result"><small>ПОСЛЕ</small><strong>Собственный опыт</strong><span>и осознанный выбор</span></div>
+        <div class="map-note">Не угадывать профессию<br/><b>Проверить её на себе</b></div>
+      </div>
+    </section>
+
+    <div class="lr-layout">
+      <aside class="lr-toc" aria-label="Содержание">
+        <span>СОДЕРЖАНИЕ</span>{chapters.map(([id,label],i)=><a href={`#${id}`} data-chapter={id}><b>{String(i+1).padStart(2,"0")}</b>{label}</a>)}
+      </aside>
+
+      <article class="lr-article">
+        <section class="lr-chapter" id="problem" data-section>
+          <p class="lr-kicker">01 · УЗНАВАНИЕ</p>
+          <h2>Информации всё больше.<br/><em>Уверенности в выборе — нет</em></h2>
+          <p class="lr-lead">Сегодня интересен Python, завтра DevOps, через неделю — кибербезопасность. Каждый материал кажется полезным, но цельного маршрута не появляется.</p>
+          <div class="symptoms">
+            <article><span>01</span><h3>Смотрите, но не делаете</h3><p>Пока инструкция открыта, всё понятно. Перед чистым терминалом возникает ступор.</p></article>
+            <article><span>02</span><h3>Выбираете по зарплате</h3><p>Цифры привлекательны, но ежедневные задачи профессии остаются неизвестными.</p></article>
+            <article><span>03</span><h3>Теряете темп</h3><p>Возникает первая сложность, обратной связи нет, а уроки продолжают открываться.</p></article>
+          </div>
+          <blockquote><p>Это не означает, что у вас нет способностей к IT</p><strong>До сих пор вы проверяли способность смотреть и повторять — но не себя в профессии</strong></blockquote>
+        </section>
+
+        <section class="lr-chapter root-problem" data-section>
+          <p class="lr-kicker">КОРНЕВАЯ ПРОБЛЕМА</p>
+          <h2>Вам продают доступ к информации <em>как готовый навык</em></h2>
+          <p class="lr-lead">Массовой платформе выгодно продать сразу всю программу. Чем больше модулей, тем весомее покупка. Но после оплаты её коммерческая задача почти завершена, а ваша настоящая работа только начинается.</p>
+          <div class="course-flow" aria-label="Где ломается массовый курс"><span>Мотивация</span><i></i><span>Видео</span><i></i><span class="danger">Первая сложность</span><i class="broken"></i><span class="danger">Пауза</span></div>
+          <p>На первой сложной задаче нужен человек, который увидит именно вашу ошибку, объяснит причину и изменит следующий шаг под ваш уровень. Без этого пробелы накапливаются, а человек начинает думать, что проблема в нём.</p>
+          <div class="money-quote"><small>РАБОТОДАТЕЛЮ НЕ НУЖЕН</small><s>Просмотренный курс</s><span>→</span><strong>Ему нужен результат,<br/>который вы сделали сами</strong></div>
+        </section>
+
+        <section class="lr-chapter" id="method" data-section>
+          <p class="lr-kicker">02 · НОВЫЙ МЕХАНИЗМ</p>
+          <h2>Сначала опыт.<br/><em>Потом большое решение</em></h2>
+          <p class="lr-lead">Тест-драйв профессии — это трёхдневная практическая проверка направления. Не тест с вариантами ответов, а настоящая инженерная задача.</p>
+          <div class="method-path">
+            {["Выбор профессии","Практическая задача","Самостоятельное решение","Защита результата","Личный разбор","Решение о пути"].map((label,i)=><div><b>{String(i+1).padStart(2,"0")}</b><span>{label}</span></div>)}
+          </div>
+          <div class="method-result"><p>За три дня нельзя стать специалистом</p><h3>Но можно перестать выбирать вслепую</h3><ul><li>Понять, интересен ли тип работы</li><li>Увидеть свой способ мышления</li><li>Найти реальные пробелы</li><li>Получить следующий маршрут</li></ul></div>
+          <a class="inline-offer" data-product-link href={productUrl}><span><small>ТЕСТ-ДРАЙВ ПРОФЕССИИ</small><b>Три дня · задача · личный разбор</b></span><strong>1 000 ₽ →</strong></a>
+          <p class="scarcity-line"><i></i>До пяти новых участников в неделю — каждое решение проверяется лично</p>
+        </section>
+
+        <section class="lr-chapter" id="proof" data-section>
+          <p class="lr-kicker">03 · ДОКАЗАТЕЛЬСТВО</p>
+          <h2>Видеоурок и профессиональная задача — <em>не одно и то же</em></h2>
+          <div class="proof-switch" role="tablist"><button class="active" data-proof-tab="video">Смотреть урок</button><button data-proof-tab="task">Решать задачу</button></div>
+          <div class="proof-stage">
+            <div class="proof-panel active" data-proof-panel="video"><div class="terminal"><div><i></i><i></i><i></i><span>docker@course:~$</span></div><code>$ docker build -t app .<br/>$ docker run -p 8080:80 app<br/><em>✓ container started</em></code></div><p>Маршрут заранее известен. Ошибки вырезаны. Возникает ощущение: «Я всё понял».</p></div>
+            <div class="proof-panel" data-proof-panel="task"><div class="task-board"><span>ВАША ЗАДАЧА</span><h3>Запустить сервис в новом окружении</h3><div><b>?</b> Зависимости</div><div><b>?</b> Настройки</div><div><b>?</b> Сеть и порты</div><div><b>?</b> Ошибка запуска</div></div><p>Теперь нужно принимать решения, искать причину и отвечать за результат.</p></div>
+          </div>
+          <blockquote><p>За что платит работодатель</p><strong>Не за узнавание команды <code>docker run</code>, а за способность довести сервис до рабочего состояния</strong></blockquote>
+        </section>
+
+        <section class="lr-chapter professions" id="professions" data-section>
+          <p class="lr-kicker">04 · ВЫБОР</p>
+          <h2>Три профессии.<br/><em>Три типа задач</em></h2>
+          <p class="lr-lead">Выбирайте не самое громкое название, а работу, которую хотите проверить на себе.</p>
+          <div class="profession-grid">{professions.map(item=><article class={`profession ${item.color}`}><div class="profession-top"><span>{item.number}</span><div class="profession-icon" aria-hidden="true">{item.id === "devops" ? "∞" : item.id === "security" ? "⬡" : "⌾"}</div></div><small>{item.role}</small><h3>{item.title}</h3><p>{item.text}</p><dl><dt>МИНИ-КВЕСТ</dt><dd>{item.quest}</dd><dt>РЕЗУЛЬТАТ</dt><dd>{item.result}</dd></dl><a data-product-link href={`/?utm_source=longread&utm_medium=content&utm_campaign=how_to_enter_it&utm_content=persona_${item.id}#characters`}>Проверить профессию <span>→</span></a></article>)}</div>
+          <p class="beginner-note"><b>Можно начинать с нуля</b><span>Задание учитывает вашу точку старта и начинается с необходимого фундамента</span></p>
+        </section>
+
+        <section class="lr-chapter mentor" data-section>
+          <p class="lr-kicker">ЛИЧНАЯ ОБРАТНАЯ СВЯЗЬ</p>
+          <div class="mentor-grid"><div><h2>Решение разбирает <em>не куратор и не менеджер</em></h2><p class="lr-lead">Обратную связь лично даёт Вадим Моисеенко — кандидат технических наук с опытом более 10 лет в Linux, сетях, инфраструктуре и безопасности.</p></div><div class="mentor-card"><span class="mentor-monogram">P</span><small>НА ЛИЧНОМ РАЗБОРЕ</small><ul><li>Как вы поняли задачу</li><li>Какие гипотезы проверяли</li><li>Где потеряли логику</li><li>Что даст наибольший рост</li></ul></div></div>
+          <blockquote><p>Позиция наставника</p><strong>Сначала увидеть вас в работе. Затем честно показать, подходит ли направление и какой маршрут имеет смысл</strong></blockquote>
+        </section>
+
+        <section class="lr-chapter" id="offer" data-section>
+          <p class="lr-kicker">05 · ТЕСТ-ДРАЙВ ПРОФЕССИИ</p>
+          <h2>Всё необходимое, чтобы <em>не покупать профессию вслепую</em></h2>
+          <div class="offer-card"><div class="offer-copy"><span>ТРИ ДНЯ ПРАКТИКИ</span><h3>Тест-драйв<br/>IT-профессии</h3><p>Одна профессия · одна настоящая задача · один личный разбор</p><div class="offer-price"><b>1 000 ₽</b><small>Продолжение необязательно</small></div><a class="lr-primary" data-product-link href={productUrl}>Выбрать профессию <span>→</span></a></div><ul class="offer-list"><li><b>01</b>Практический мини-квест</li><li><b>02</b>Теория и инструменты для старта</li><li><b>03</b>Проверка и защита решения</li><li><b>04</b>Личный разбор 30 минут</li><li><b>05</b>Карта пробелов и следующий маршрут</li></ul></div>
+          <div class="two-outcomes"><article><small>ЕСЛИ ПОНРАВИЛОСЬ</small><h3>Появится причина двигаться дальше</h3><p>Вы поймёте, какие навыки развивать и как может выглядеть индивидуальный трек.</p></article><article><small>ЕСЛИ НЕ ПОНРАВИЛОСЬ</small><h3>Вы сэкономите месяцы</h3><p>Узнаете это за три дня и 1 000 ₽, а не после покупки большой программы.</p></article></div>
+        </section>
+
+        <section class="lr-chapter faq" data-section>
+          <p class="lr-kicker">ЧАСТЫЕ ВОПРОСЫ</p><h2>Перед тем как <em>попробовать</em></h2>
+          {faq.map(([q,a],i)=><details><summary><b>{String(i+1).padStart(2,"0")}</b><span>{q}</span><i>+</i></summary><p>{a}</p></details>)}
+        </section>
+
+        <section class="final-offer" data-section>
+          <div class="final-grid"></div><p class="lr-kicker">НЕ БОЛЕЕ ПЯТИ НОВЫХ УЧАСТНИКОВ В НЕДЕЛЮ</p><h2>Через три дня у вас будет то, чего не даст обзор профессий: <em>собственный опыт</em></h2><p>В худшем случае вы поймёте, что направление не подходит, потратив 1 000 ₽ вместо нескольких месяцев. В лучшем — найдёте профессию, ради которой действительно захотите стать сильным специалистом.</p><div class="capacity"><span><i></i>Личная проверка</span><span>До 5 мест в неделю</span></div><a class="lr-primary large" data-product-link href={productUrl}>Выбрать профессию и пройти тест-драйв <b>1 000 ₽</b></a><small>DevOps · информационная безопасность · этичный пентест</small>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer class="lr-footer"><a class="lr-brand" href="/"><span>P</span><b>ПРОФЕССОР IT</b></a><p>Персональный маршрут через практику и обратную связь</p><a href="#top">Наверх ↑</a></footer>
+  <script src="../../../scripts/longread.ts"></script>
+</Base>
