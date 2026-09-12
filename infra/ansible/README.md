@@ -18,6 +18,27 @@ cd infra/ansible
 ./deploy.sh
 ```
 
+Вход на узел Proxmox выполняется через настроенное имя SSH:
+
+```bash
+ssh Proxmox
+```
+
+Если рабочая машина не видит внутренний адрес `192.168.50.111` напрямую,
+используйте Proxmox как промежуточный узел:
+
+```bash
+ssh -J Proxmox deploy@192.168.50.111
+```
+
+Для публикации через этот маршрут сначала соберите сайт, затем передайте
+Ansible параметр подключения и явный идентификатор выпуска:
+
+```bash
+ansible-playbook deploy.yml \
+  -e '{"ansible_ssh_common_args":"-o ProxyJump=Proxmox","release_id":"<git-sha>-<YYYYMMDDHHMMSS>"}'
+```
+
 Сборка выполняется в зафиксированном контейнере Node.js, поэтому Node/npm не
 нужно устанавливать на рабочую машину или production-сервер.
 
