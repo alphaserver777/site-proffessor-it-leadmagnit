@@ -30,6 +30,7 @@
         dest: "{{ release_path }}/"
         archive: true
         delete: true
+        use_ssh_args: true
         rsync_opts:
           - "--chown=root:root"
 
@@ -80,4 +81,3 @@
         cmd: docker compose exec -T site nginx -s reload
         chdir: "{{ project_root }}"
       changed_when: true
-
