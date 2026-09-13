@@ -1,18 +1,19 @@
 {
-  "name": "professor-it-marketing",
+  "name": "professor-it-websites",
   "private": true,
-  "version": "2.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "astro dev --host 0.0.0.0",
-    "build": "astro check && astro build && cp resume.html business.html styles.css script.js photo_2025-11-18_12-50-03.jpg dist/",
-    "preview": "astro preview --host 0.0.0.0"
-  },
-  "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@fontsource/inter": "^5.2.6",
-    "@fontsource/space-grotesk": "^5.2.6",
-    "astro": "^7.2.2",
-    "typescript": "^5.9.2"
+    "check": "npm run check --workspace @professorit/test-drive && npm run check --workspace @professorit/lead-magnet && npm run check --workspace @professorit/mentorship",
+    "build:apps": "npm run build --workspace @professorit/test-drive && npm run build --workspace @professorit/lead-magnet && npm run build --workspace @professorit/mentorship",
+    "build": "npm run build:apps && node scripts/assemble-build.mjs && npm run verify:build",
+    "verify:build": "node scripts/verify-build.mjs",
+    "dev:test-drive": "npm run dev --workspace @professorit/test-drive",
+    "dev:lead-magnet": "npm run dev --workspace @professorit/lead-magnet",
+    "dev:mentorship": "npm run dev --workspace @professorit/mentorship"
   }
 }

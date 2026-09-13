@@ -1,0 +1,492 @@
+---
+import Base from "@professorit/funnel-shared/Base.astro";
+import Brief from "../components/Brief.astro";
+import { faq, personas, roadmap } from "../data/site";
+const title = "Тест-драйв IT-профессии с наставником — Профессор IT";
+const description =
+  "Попробуйте DevOps, информационную безопасность или этичный пентест за три дня: практический мини-квест и личный разбор с кандидатом технических наук.";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      name: "Вадим Моисеенко",
+      jobTitle: "Инженерный наставник, кандидат технических наук",
+      url: "https://professorit.ru/",
+    },
+    {
+      "@type": "Service",
+      name: "Тест-драйв IT-профессии с наставником",
+      description:
+        "Трёхдневный практический мини-квест и личный разбор результата",
+      provider: { "@type": "Person", name: "Вадим Моисеенко" },
+      areaServed: "RU",
+      offers: { "@type": "Offer", price: "1000", priceCurrency: "RUB" },
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: faq.map(([q, a]) => ({
+        "@type": "Question",
+        name: q,
+        acceptedAnswer: { "@type": "Answer", text: a },
+      })),
+    },
+  ],
+};
+---
+
+<Base {title} {description}>
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(jsonLd)}
+  />
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Профессор IT — главная"
+      ><span class="brand-mark">P</span><span
+        >ПРОФЕССОР IT<small>ENGINEERING MENTORSHIP</small></span
+      ></a
+    >
+    <nav aria-label="Основная навигация">
+      <a href="#characters">Персонажи</a><a href="#test-drive">Тест-драйв</a><a
+        href="#method">Маршрут</a
+      ><a href="#mentor">Наставник</a>
+    </nav>
+    <button class="button compact" data-open-brief>Начать за 1 000 ₽</button>
+  </header>
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <div class="eyebrow"><span></span> ТЕСТ-ДРАЙВ IT-ПРОФЕССИИ</div><h1>
+          Три дня, которые могут<br /><em>сэкономить вам годы обучения</em>
+        </h1><p class="hero-lead">
+          Пройдите тест-драйв профессии, где вы решите практическую задачу DevOps,
+          информационной безопасности или этичного пентеста, а затем лично
+          разберёте результат с Senior DevOps.
+        </p><div class="hero-actions">
+          <button class="button primary large" data-open-brief
+            >Пройти тест-драйв <b>1 000 ₽</b></button
+          ><a class="text-link" href="#characters"
+            >Выбрать профессию <span>↓</span></a
+          >
+        </div><div class="hero-proof">
+          <span><b>3 дня</b> Практики</span><span
+            ><b>1 квест</b> С результатом</span
+          ><span><b>30 мин</b> Личный разбор</span>
+        </div>
+      </div>
+      <div
+        class="hero-system hero-engine"
+        aria-label="Инженерное ядро персонального маршрута"
+      >
+        <div class="engine-grid"></div><div class="engine-glow"></div>
+        <div class="engine-top">
+          <span><i></i> ТЕСТ-ДРАЙВ / ПРАКТИКА</span><b>PROFESSOR IT · 1:1</b>
+        </div>
+        <svg class="engine-circuit" viewBox="0 0 620 620" aria-hidden="true"
+          ><circle cx="310" cy="270" r="178"></circle><circle
+            class="engine-orbit"
+            cx="310"
+            cy="270"
+            r="135"></circle><circle
+            class="engine-energy"
+            cx="310"
+            cy="270"
+            r="155"></circle></svg
+        >
+        <div class="engine-input">
+          <small>ВАША ТОЧКА СТАРТА</small><strong>Интерес · опыт · цель</strong
+          ><span>Выбираем профессию и посильную инженерную задачу</span>
+        </div>
+        <div class="engine-core">
+          <div class="engine-core-ring"></div><span>ИНДИВИДУАЛЬНЫЙ МАРШРУТ</span
+          ><strong>Тест-драйв<br />профессии</strong><small
+            >ЗАДАЧА × РЕШЕНИЕ × РАЗБОР</small
+          >
+        </div>
+        <div class="engine-class engine-class-devops">
+          <span class="engine-class-icon" aria-hidden="true"
+            ><svg viewBox="0 0 40 32"
+              ><path
+                d="M10 7c-5 0-8 4-8 9s3 9 8 9c8 0 12-18 20-18 5 0 8 4 8 9s-3 9-8 9C22 25 18 7 10 7Z"
+              ></path></svg
+            ></span
+          ><span>DevOps</span>
+        </div>
+        <div class="engine-class engine-class-security">
+          <span class="engine-class-icon" aria-hidden="true"
+            ><svg viewBox="0 0 32 32"
+              ><path d="M16 3 27 7v8c0 7-4 11-11 14C9 26 5 22 5 15V7Z"
+              ></path><path d="M11 15h10v8H11Zm2 0v-3a3 3 0 0 1 6 0v3"
+              ></path></svg
+            ></span
+          ><span>ИБ</span>
+        </div>
+        <div class="engine-class engine-class-hacker">
+          <span class="engine-class-icon" aria-hidden="true"
+            ><svg viewBox="0 0 32 32"
+              ><circle cx="16" cy="16" r="11"></circle><circle
+                cx="16"
+                cy="16"
+                r="5"></circle><path d="M16 1v7m0 16v7M1 16h7m16 0h7"
+              ></path></svg
+            ></span
+          ><span>Пентест</span>
+        </div>
+        <div class="engine-output">
+          <small>РЕЗУЛЬТАТ ТЕСТ-ДРАЙВА</small><strong
+            >Понять профессию<br />на практике</strong
+          ><div><span>Опыт</span><span>Разбор</span><span>Маршрут</span></div>
+        </div>
+        <div class="engine-stages">
+          <span><b>01</b> Выбор</span><span><b>02</b> Задача</span><span
+            ><b>03</b> Практика</span
+          ><span><b>04</b> Разбор</span>
+        </div>
+      </div>
+    </section>
+    <section class="contrast section shell reveal">
+      <div class="section-head contrast-heading">
+        <span class="kicker">ВИДЕОКУРС ИЛИ ПРАКТИКА С НАСТАВНИКОМ</span><h2>
+          Посмотреть видеоурок —<br /><em>не значит научиться!</em>
+        </h2><p>
+          Можно пересмотреть сотни часов уроков, повторять команды и даже
+          чувствовать себя инженером. Но пока вы не решаете задачу сами, вы
+          просто впитываете чужой опыт. Это как смотреть, как кто-то катается
+          на велосипеде. Это не научит вас держать равновесие.
+        </p>
+      </div><div class="contrast-grid">
+        <article class="muted-card course-card">
+          <div class="comparison-label">
+            <span class="card-code">МАССОВЫЙ ВИДЕОКУРС</span><b>01</b>
+          </div><h3>Доступ к урокам<br />и дальше сами</h3><div
+            class="video-player"
+            aria-hidden="true"
+          >
+            <span>▶</span><div><i></i><i></i><i></i></div><small
+              >Видео-лекция на 3 часа</small
+            >
+          </div><div
+            class="course-progress"
+            aria-label="Типичный путь самостоятельного курса"
+          >
+            <span class="watched">Мотивация</span><i></i><span>Видео</span><i
+            ></i><span class="drop">Первая сложность</span><i class="broken"
+            ></i><span class="drop">Пауза</span>
+          </div><ul>
+            <li>
+              <strong>Одинаковая программа</strong> для всех
+            </li><li>
+              <strong>Некому увидеть вашу ошибку</strong> и объяснить причину
+            </li><li>
+              <strong>Следующий урок открыт</strong>, даже если предыдущий не
+              закреплён
+            </li>
+          </ul><div class="comparison-outcome weak">
+            <span>Типичный итог</span><b
+              >«Я всё посмотрел, но самостоятельно сделать пока не могу»</b
+            >
+          </div>
+        </article><div class="versus"><span>VS</span></div><article
+          class="active-card mentorship-card"
+        >
+          <div class="comparison-label">
+            <span class="card-code">ПРОФЕССОР IT / TEST DRIVE</span><b>02</b>
+          </div><h3>Задача, практика<br />и личный разбор</h3><div
+            class="mentor-loop"
+          >
+            <span>Задача</span><b>→</b><span>Практика</span><b>→</b><span
+              >Разбор</span
+            ><b>↻</b>
+          </div><ul>
+            <li>
+              <strong>Задача подбирается</strong> под ваш опыт и цель
+            </li><li>
+              <strong>Вы решаете задачу</strong> и получаете разбор
+            </li><li>
+              <strong>Личный разбор</strong> с кандидатом наук
+            </li>
+          </ul><div class="comparison-outcome strong">
+            <span>Результат тест-драйва</span><b
+              >«Я попробовал профессию и понимаю, хочу ли двигаться дальше»</b
+            >
+          </div>
+        </article>
+      </div><div class="contrast-conclusion">
+        <span>КУРС ПОКАЗЫВАЕТ СОДЕРЖАНИЕ</span><i>→</i><strong
+          >ТЕСТ-ДРАЙВ ПОКАЗЫВАЕТ ВАС В ПРОФЕССИИ</strong
+        >
+      </div><p class="contrast-verdict">
+        Решает не количество уроков. <strong
+          >Решает, дойдёте ли вы до реального результата.</strong
+        >
+      </p>
+    </section>
+    <section class="roadmap-section section shell reveal" id="method">
+      <div class="section-head split">
+        <div>
+          <span class="kicker">КАК УСТРОЕН ТЕСТ-ДРАЙВ</span><h2>
+            От выбора профессии<br />до личного разбора
+          </h2>
+        </div><p>
+          Сначала вы проверяете профессию на реальной задаче. Только после
+          результата решаем, нужен ли вам основной индивидуальный трек и каким
+          он должен быть
+        </p>
+      </div><div class="journey-map">
+        <div class="journey-track">
+          <svg
+            class="journey-line"
+            viewBox="0 0 1200 360"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+            ><path
+              d="M70 220 C175 55 300 55 410 220 S640 330 760 145 S1000 15 1130 190"
+            ></path><path
+              class="journey-pulse"
+              d="M70 220 C175 55 300 55 410 220 S640 330 760 145 S1000 15 1130 190"
+            ></path></svg
+          >{
+            roadmap.map((item, index) => (
+              <button
+                class={`journey-stop ${index === 0 ? "active" : ""}`}
+                type="button"
+                data-roadmap-step={index}
+                aria-pressed={index === 0 ? "true" : "false"}
+              >
+                <>
+                  <span>{item.number}</span>
+                  <i>
+                    {index === 0
+                      ? "⌖"
+                      : index === 1
+                        ? "◈"
+                        : index === 2
+                          ? "⬡"
+                          : index === 3
+                            ? "⚙"
+                            : index === 4
+                              ? "◆"
+                              : "★"}
+                  </i>
+                  <strong>{item.title}</strong>
+                  <small>{item.short}</small>
+                </>
+              </button>
+            ))
+          }
+        </div><article class="journey-detail" data-roadmap-detail>
+          <div class="journey-detail-index">
+            <span>{roadmap[0].number}</span><small>ЭТАП ТЕСТ-ДРАЙВА</small>
+          </div><div class="journey-detail-copy">
+            <h3>{roadmap[0].title}</h3><p>{roadmap[0].text}</p>
+          </div><div class="journey-detail-result">
+            <small>РЕЗУЛЬТАТ ЭТАПА</small><strong>{roadmap[0].result}</strong>
+          </div>
+        </article><script
+          is:inline
+          type="application/json"
+          data-roadmap-data
+          set:html={JSON.stringify(roadmap)}
+        />
+      </div>
+    </section>
+    <section class="characters section" id="characters">
+      <div class="shell">
+        <div class="section-head centered reveal">
+          <h2>Выберите профессию<br />для тест-драйва</h2>
+        </div><div class="origin-node reveal">
+          <span>00</span><div>
+            <small>ОБЩИЙ КЛАСС</small><strong>Новичок</strong>
+          </div><p>Понимать систему · диагностировать · автоматизировать</p>
+        </div><div class="branch-lines" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div><div class="persona-grid">
+          {
+            personas.map((item) => (
+              <article
+                class="persona-card reveal"
+                data-persona-card={item.id}
+                style={`--accent:${item.color};--glow:${item.glow}`}
+              >
+                <>
+                  <div class="persona-top">
+                    <>
+                      <span class="persona-number">КЛАСС {item.number}</span>
+                      <span class="class-emblem" aria-hidden="true">
+                        {item.id === "devops" ? (
+                          <svg viewBox="0 0 100 100">
+                            <path d="M50 8 85 28v44L50 92 15 72V28Z" />
+                            <path d="M30 62V39l20-12 20 12v23L50 74Z" />
+                            <path d="M50 27v47M30 39l20 12 20-12" />
+                          </svg>
+                        ) : item.id === "security" ? (
+                          <svg viewBox="0 0 100 100">
+                            <path d="M50 8 84 21v28c0 22-14 35-34 43-20-8-34-21-34-43V21Z" />
+                            <path d="M36 49V39a14 14 0 0 1 28 0v10M30 49h40v27H30Z" />
+                            <path d="M50 58v9" />
+                          </svg>
+                        ) : (
+                          <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="36" />
+                            <circle cx="50" cy="50" r="23" />
+                            <circle cx="50" cy="50" r="9" />
+                            <path d="M50 4v18M50 78v18M4 50h18M78 50h18" />
+                          </svg>
+                        )}
+                      </span>
+                    </>
+                  </div>
+                  <small>{item.eyebrow}</small>
+                  <h3>{item.name}</h3>
+                  <p class="persona-lead">{item.lead}</p>
+                  <div class="persona-detail">
+                    <>
+                      <b>Подойдёт</b>
+                      <p>{item.fit}</p>
+                      <b>Ключевые навыки</b>
+                      <div class="tags">
+                        {item.skills.map((skill) => (
+                          <span>{skill}</span>
+                        ))}
+                      </div>
+                      <b>Мини-квест</b>
+                      <p>{item.quest}</p>
+                      <b>Артефакт</b>
+                      <p>{item.artifact}</p>
+                    </>
+                  </div>
+                  <button
+                    class="button persona-button"
+                    data-select-persona={item.id}
+                  >
+                    Пройти тест-драйв
+                  </button>
+                </>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+    <section class="test-drive section shell" id="test-drive">
+      <div class="drive-panel reveal">
+        <div class="drive-copy">
+          <span class="kicker">ТЕСТ-ДРАЙВ ПРОФЕССИИ / 1 000 ₽</span><h2>
+            Тест-драйв показывает вас<br />в профессии
+          </h2><p>
+            За три дня вы не станете специалистом, но вы поймёте: «я хочу идти
+            в эту сторону» или «это не моё». И это стоит потраченного времени и
+            1 000 ₽.
+          </p><button class="button primary large" data-open-brief
+            >Просто попробовать за 1 000 ₽</button
+          >
+        </div><ol class="drive-steps">
+          <li>
+            <span>01</span><div>
+              <b>Получаете задание и полезные инструменты</b><p>
+                Только необходимая теория и всё для старта в выбранной
+                профессии.
+              </p>
+            </div>
+          </li><li>
+            <span>02</span><div>
+              <b>Выполняете мини-квест</b><p>
+                Создаёте небольшой, но настоящий инженерный результат.
+              </p>
+            </div>
+          </li><li>
+            <span>03</span><div>
+              <b>Сдаёте и защищаете решение</b><p>
+                Я вижу результат, ход мышления и точки роста.
+              </p>
+            </div>
+          </li><li>
+            <span>04</span><div>
+              <b>Приходите на личный разбор</b><p>
+                Обратная связь, честная оценка направления и решение о
+                продолжении.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+    <section class="mentor section shell reveal" id="mentor">
+      <div class="mentor-photo">
+        <img
+          src="/photo_2025-11-18_12-50-03.jpg"
+          width="680"
+          height="800"
+          loading="lazy"
+          alt="Вадим Моисеенко — Профессор IT"
+        /><span>PROFESSOR_IT / MENTOR</span>
+      </div><div class="mentor-copy">
+        <span class="kicker">ВАШ НАСТАВНИК</span><h2>Вадим Моисеенко</h2><p
+          class="mentor-role"
+        >
+          Кандидат технических наук · 10+ лет в IT
+        </p><p>
+          Работаю с инфраструктурой, Linux, сетями, автоматизацией и
+          безопасностью. На личном разборе я покажу, что уже получилось, где вы
+          теряете логику и какой следующий шаг даст наибольший рост. Основной
+          трек предложу только после практики и при взаимном желании продолжить
+          работу.
+        </p><div class="mentor-facts">
+          <span><b>1:1</b> индивидуальная работа</span><span
+            ><b>LIVE</b> разбор ваших решений</span
+          ><span><b>ETHICAL</b> только разрешённый контур</span>
+        </div><a class="text-link" href="/resume.html"
+          >Профессиональный путь <span>→</span></a
+        >
+      </div>
+    </section>
+    <section class="faq section shell reveal">
+      <div class="section-head">
+        <span class="kicker">БЕЗ МЕЛКОГО ШРИФТА</span><h2>Частые вопросы</h2>
+      </div><div class="faq-list">
+        {
+          faq.map(([question, answer], index) => (
+            <details>
+              <>
+                <summary>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  {question}
+                  <i>+</i>
+                </summary>
+                <p>{answer}</p>
+              </>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+    <section class="final-cta section shell reveal">
+      <span class="kicker">БЕЗ ДОЛГОГО ОБЯЗАТЕЛЬСТВА</span><h2>
+        Просто попробуйте.<br />Билет уже ждёт.
+      </h2><p>
+        За три дня и 1 000 ₽ вы получите честный ответ. Деньги я верну, если не
+        дам задание, проверку и разбор.
+      </p><button class="button primary large" data-open-brief
+        >Записаться на тест-драйв <b>1 000 ₽</b></button
+      ><small
+        >Осталось три места на этой неделе</small
+      >
+    </section>
+  </main>
+  <footer class="site-footer shell">
+    <div class="brand">
+      <span class="brand-mark">P</span><span
+        >ПРОФЕССОР IT<small>ENGINEERING MENTORSHIP</small></span
+      >
+    </div><div>
+      <a href="https://t.me/proffessor_it">Telegram</a><a
+        href="https://github.com/alphaserver777">GitHub</a
+      ><a href="/business.html">Для бизнеса</a><a href="/privacy/"
+        >Конфиденциальность</a
+      >
+    </div><small>© {new Date().getFullYear()} Профессор IT</small>
+  </footer>
+  <Brief />
+  <script src="../scripts/site.ts"></script>
+</Base>

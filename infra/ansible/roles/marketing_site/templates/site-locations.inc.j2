@@ -58,8 +58,14 @@ location = /mentorship {
     return 301 /mentorship/;
 }
 
+location ^~ /mentorship/assets/ {
+    alias {{ project_root }}/current/mentorship/assets/;
+    expires 1y;
+    add_header Cache-Control "public, max-age=31536000, immutable" always;
+}
+
 location ^~ /mentorship/ {
-    alias /srv/professorit-mentorship/current/;
+    alias {{ project_root }}/current/mentorship/;
     index index.html;
     try_files $uri $uri/ =404;
     add_header Cache-Control "no-cache, must-revalidate" always;

@@ -34,6 +34,15 @@
         rsync_opts:
           - "--chown=root:root"
 
+    - name: Render shared Nginx site locations
+      ansible.builtin.template:
+        src: roles/marketing_site/templates/site-locations.inc.j2
+        dest: "{{ project_root }}/config/site-locations.inc"
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Reload marketing Nginx
+
     - name: Point current symlink to the new release
       ansible.builtin.file:
         src: "{{ release_path }}"
@@ -41,6 +50,16 @@
         state: link
         force: true
       notify: Reload marketing Nginx
+
+    - name: Check public Nginx configuration
+      ansible.builtin.command:
+        argv:
+          - docker
+          - exec
+          - professorit-site
+          - nginx
+          - -t
+      changed_when: false
 
     - name: Apply pending handlers before checks
       ansible.builtin.meta: flush_handlers
@@ -58,6 +77,8 @@
         - /guide/kak-voiti-v-it/2/
         - /guide/kak-voiti-v-it/3/
         - /guide/kak-voiti-v-it/4/
+        - /mentorship/
+        - /mentorship/api/site.json
         - /payment/success/
         - /payment/failed/
 

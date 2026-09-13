@@ -1,0 +1,96 @@
+---
+- name: Deploy versioned Professor IT mentorship site
+  hosts: marketing_web
+  become: true
+  gather_facts: false
+
+  vars:
+    project_root: /srv/professorit-mentorship
+    releases_to_keep: 5
+    release_path: "{{ project_root }}/releases/{{ release_id }}"
+
+  pre_tasks:
+    - name: Require an explicit release identifier
+      ansible.builtin.assert:
+        that:
+          - release_id is defined
+          - release_id | length > 0
+        fail_msg: "Pass -e release_id=<git-sha-or-version>"
+
+  tasks:
+    - name: Create mentorship release directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+      loop:
+        - "{{ project_root }}"
+        - "{{ project_root }}/releases"
+        - "{{ release_path }}"
+
+    - name: Upload immutable static build
+      ansible.posix.synchronize:
+        src: "{{ playbook_dir }}/../../dist/"
+        dest: "{{ release_path }}/"
+        archive: true
+        use_ssh_args: true
+        delete: true
+        rsync_opts:
+          - "--chown=root:root"
+
+    - name: Cache versioned mentorship static files for one year
+      ansible.builtin.blockinfile:
+        path: /srv/professorit/config/site-locations.inc
+        marker: "# {mark} Professor IT mentorship immutable assets"
+        insertbefore: '^location \^~ /mentorship/ \{'
+        block: |
+          location ^~ /mentorship/assets/ {
+              alias /srv/professorit-mentorship/current/assets/;
+              expires 1y;
+              add_header Cache-Control "public, max-age=31536000, immutable" always;
+          }
+      register: mentorship_cache_config
+
+    - name: Check public web server configuration
+      ansible.builtin.command:
+        argv:
+          - docker
+          - exec
+          - professorit-site
+          - nginx
+          - -t
+      changed_when: false
+
+    - name: Reload public web server configuration
+      ansible.builtin.command:
+        argv:
+          - docker
+          - exec
+          - professorit-site
+          - nginx
+          - -s
+          - reload
+      when: mentorship_cache_config.changed
+
+    - name: Point current symlink to the new release
+      ansible.builtin.file:
+        src: "{{ release_path }}"
+        dest: "{{ project_root }}/current"
+        state: link
+        force: true
+
+    - name: Discover old mentorship releases
+      ansible.builtin.find:
+        paths: "{{ project_root }}/releases"
+        file_type: directory
+        recurse: false
+      register: deployed_releases
+
+    - name: Remove releases outside retention window
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ (deployed_releases.files | sort(attribute='mtime', reverse=true))[releases_to_keep:] }}"
+      when: deployed_releases.matched | int > releases_to_keep | int

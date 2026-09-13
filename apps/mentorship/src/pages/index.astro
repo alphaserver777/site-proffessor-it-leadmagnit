@@ -1,0 +1,71 @@
+---
+const title = "Профессор IT — личная работа с Вадимом в DevOps";
+const description = "Профессор IT — личная работа с Вадимом: путь в DevOps/SRE с нуля до оффера за 3 месяца, практика и материалы прямо на сайте.";
+const canonical = new URL(Astro.url.pathname, Astro.site);
+// При выпуске значение равно неизменяемому идентификатору версии исходного кода.
+// Оно позволяет кэшировать статические файлы на год и сразу получать новую версию
+// после выпуска сайта.
+const assetVersion = import.meta.env.ASSET_VERSION || "development";
+const assetUrl = (file: string) => `/mentorship/assets/${file}?v=${encodeURIComponent(assetVersion)}`;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" sizes="256x256" href="/mentorship/professorit-mark.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="/mentorship/professorit-mark.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Профессор IT" />
+    <meta property="og:title" content="Профессор IT — с нуля до оффера за 3 месяца в DevOps" />
+    <meta property="og:description" content="Личная работа с Вадимом: спринты, живая практика, разборы и выход на оффер." />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content="https://professorit.ru/mentorship/professorit-logo.webp" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Профессор IT — с нуля до оффера за 3 месяца в DevOps" />
+    <meta name="twitter:description" content="Личная работа с Вадимом: спринты, живая практика, разборы и выход на оффер." />
+    <meta name="twitter:image" content="https://professorit.ru/mentorship/professorit-logo.webp" />
+    <style is:inline>
+      @media (min-width: 1024px) {
+        header nav > div:nth-child(2) > a {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+      }
+    </style>
+    <script is:inline>
+      (() => {
+        let preference = "system";
+        try { preference = localStorage.getItem("ment_theme") || "system"; } catch { preference = "system"; }
+        const dark = preference === "dark" || (preference === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+        document.documentElement.dataset.themePreference = preference;
+      })();
+    </script>
+    <script is:inline type="module" crossorigin="anonymous" src={assetUrl("reference-app.js")}></script>
+    <script is:inline type="module" define:vars={{ assetVersion }}>
+      // These scripts add visual effects and filters after the page is usable.
+      // They must not compete with the first render on a weak device or network.
+      const enhancementAssets = ["ambient.js", "roadmap.js", "about.js", "faq.js", "final-cta.js", "footer.js"]
+        .map((file) => `/mentorship/assets/${file}?v=${encodeURIComponent(assetVersion)}`);
+      const loadEnhancements = () => {
+        const load = () => enhancementAssets.forEach((asset) => import(asset));
+        if ("requestIdleCallback" in window) {
+          window.requestIdleCallback(load, { timeout: 2500 });
+        } else {
+          window.setTimeout(load, 800);
+        }
+      };
+      if (document.readyState === "complete") loadEnhancements();
+      else window.addEventListener("load", loadEnhancements, { once: true });
+    </script>
+    <link rel="stylesheet" crossorigin="anonymous" href={assetUrl("reference.css")} />
+    <link rel="stylesheet" href={assetUrl("brand-colors.css")} />
+  </head>
+  <body><div id="root"></div></body>
+</html>
